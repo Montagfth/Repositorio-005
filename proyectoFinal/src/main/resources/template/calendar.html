@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Proyectos - SC LLAMKAY SAC</title>
+
+    <!-- Tailwind y Material Icons -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1A237E",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "accent-orange": "#FF9800",
+                        "accent-green": "#4CAF50",
+                        "accent-red": "#F44336"
+                    },
+                    fontFamily: { display: ["Manrope", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+
+    <div class="layout-container flex h-full grow flex-row">
+        <!-- Sidebar importado -->
+        <aside th:replace="fragments/sidebar :: sidebar"></aside>
+
+        <!-- Contenido principal -->
+        <main class="flex-1 p-6 lg:p-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex-1 flex flex-col gap-6">
+                    <div class="flex flex-wrap justify-between items-center gap-3">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-gray-900 dark:text-white text-3xl font-black tracking-tight">Calendario de Proyectos</h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-base">SC LLAMKAY SAC</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <label class="flex flex-col min-w-40 h-12 w-full">
+                                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+                                    <div class="text-gray-500 dark:text-gray-400 flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                        <span class="material-symbols-outlined">search</span>
+                                    </div>
+                                    <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 h-full placeholder:text-gray-500 dark:placeholder-text-gray-400 px-4 text-base font-normal leading-normal" placeholder="Buscar un proyecto..." value=""/>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="flex gap-3 items-center">
+                            <button class="flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm font-medium">Tipo de Proyecto</p>
+                                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">arrow_drop_down</span>
+                            </button>
+                            <button class="flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm font-medium">Estado</p>
+                                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">arrow_drop_down</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm">
+                        <div class="flex flex-col">
+                            <div class="flex items-center p-1 justify-between">
+                                <button class="text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <p class="text-gray-900 dark:text-white text-lg font-bold leading-tight">Octubre 2023</p>
+                                <button class="text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                            <div class="grid grid-cols-7 gap-1 mt-2">
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">DOM</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">LUN</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">MAR</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">MIÉ</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">JUE</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">VIE</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">SÁB</p>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-500 dark:text-gray-400">1</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">2</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">3</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">4
+                                    <div class="bg-blue-200 dark:bg-blue-800 rounded px-1 py-0.5 text-xs text-blue-800 dark:text-blue-200 mt-1 cursor-pointer">Proyecto Alfa</div>
+                                </div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200 bg-primary/10 dark:bg-primary/20 relative">5 <span class="absolute top-1 right-1 text-white bg-primary rounded-full size-5 flex items-center justify-center text-xs font-bold"></span>
+                                    <div class="bg-blue-200 dark:bg-blue-800 rounded px-1 py-0.5 text-xs text-blue-800 dark:text-blue-200 mt-1 cursor-pointer">Proyecto Alfa</div>
+                                </div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">6
+                                    <div class="bg-blue-200 dark:bg-blue-800 rounded px-1 py-0.5 text-xs text-blue-800 dark:text-blue-200 mt-1 cursor-pointer">Proyecto Alfa</div>
+                                </div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">7</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">8</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">9</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">10</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">11</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">12
+                                    <div class="bg-green-200 dark:bg-green-800 rounded px-1 py-0.5 text-xs text-green-800 dark:text-green-200 mt-1 cursor-pointer">Proyecto Beta</div>
+                                </div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">13
+                                    <div class="bg-green-200 dark:bg-green-800 rounded px-1 py-0.5 text-xs text-green-800 dark:text-green-200 mt-1 cursor-pointer">Proyecto Beta</div>
+                                </div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">14</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">15</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">16</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">17</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">18</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">19</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">20</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">21</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">22</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">23
+                                    <div class="bg-purple-200 dark:bg-purple-800 rounded px-1 py-0.5 text-xs text-purple-800 dark:text-purple-200 mt-1 cursor-pointer">Proyecto Gamma</div>
+                                </div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">24
+                                    <div class="bg-purple-200 dark:bg-purple-800 rounded px-1 py-0.5 text-xs text-purple-800 dark:text-purple-200 mt-1 cursor-pointer">Proyecto Gamma</div>
+                                </div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">25</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">26</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">27</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">28</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">29</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">30</div>
+                                <div class="h-28 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200">31</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full lg:w-80 flex flex-col gap-6">
+                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Resumen de Proyectos</h2>
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-lg">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">workspaces</span>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white">12</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Proyectos Activos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg">
+                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">hourglass_top</span>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white">5</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">En Progreso</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-lg">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400">task_alt</span>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white">28</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Finalizados</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</div>
+</body>
+</html>

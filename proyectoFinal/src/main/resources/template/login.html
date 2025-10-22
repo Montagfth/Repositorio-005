@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>SC LLAMKAY SAC - Iniciar Sesión</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1193d4",
+                        "primary-hover": "#0e7ab8",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-cover bg-center"
+        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDqvFMhHgGdu9ycMbKsSCMEPHo5RQwQZdq2r7fA7UU5puOo3JOBC1YjB-5sgejuzFRiu4GrWKpftULfbt1F04j_rV3lHhjN1SwNoC7HX38L4DijnQvkM2HVvHCRfhz9ytV1zL3JtBi36HNOWmauZ4mmKjEd6EmfUv69nlDQppVW3OvFz3UCl8VhOHJsQJ-aG_qxbC7AvD-bewhggLKQpzwQGyS8ZgxFjWA8GSCcKT43oc3efTQmfQUz3Q5zx6l4yLKrA8AkXa6SzHo');">
+        <div class="absolute inset-0 bg-background-light/80 dark:bg-background-dark/90"></div>
+        <div class="relative flex w-full max-w-md flex-col items-center justify-center p-8">
+            <div class="mb-8 flex flex-col items-center">
+                <div class="w-full grow bg-white dark:bg-transparent @container p-4 rounded-lg">
+                    <div
+                        class="w-full gap-1 overflow-hidden bg-transparent @[480px]:gap-2 rounded-lg flex justify-center">
+                        <div class="w-48 h-16 bg-center bg-no-repeat bg-contain" data-alt="Logo de SC LLAMKAY SAC"
+                            style="background-image: url('../static/img/Logo.png');">
+                        </div>
+                    </div>
+                </div>
+                <h1 class="text-[#111618] dark:text-white tracking-light text-3xl font-bold leading-tight text-center">
+                    Bienvenido de nuevo</h1>
+            </div>
+            <div class="w-full rounded-xl bg-white dark:bg-background-dark/50 p-8 shadow-2xl backdrop-blur-sm">
+                <div class="flex w-full flex-col gap-4">
+                    <div class="flex w-full flex-col">
+                        <label class="flex flex-col">
+                            <p class="text-[#111618] dark:text-gray-200 text-base font-medium leading-normal pb-2">
+                                Usuario</p>
+                            <div class="relative flex w-full items-center">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">person</span>
+                                <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111618] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-3 pl-12 text-base font-normal leading-normal transition-all duration-300"
+                                    placeholder="Usuario" value="" />
+                            </div>
+                        </label>
+                    </div>
+                    <div class="flex w-full flex-col">
+                        <label class="flex flex-col">
+                            <p class="text-[#111618] dark:text-gray-200 text-base font-medium leading-normal pb-2">
+                                Contraseña</p>
+                            <div class="relative flex w-full flex-1 items-stretch">
+                                <span
+                                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">lock</span>
+                                <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111618] dark:text-white focus:outline-none focus:ring-2 focus:ring-primary border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-3 pl-12 pr-12 text-base font-normal leading-normal transition-all duration-300"
+                                    placeholder="Ingresa tu contraseña" type="password" value="" />
+                                <button aria-label="Mostrar u ocultar contraseña"
+                                    class="absolute mt-1 right-0 top-0 h-full px-4 text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary-light">
+                                    <span class="material-symbols-outlined">visibility</span>
+                                </button>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <a class="text-sm font-medium text-primary hover:underline" href="#">¿Olvidaste tu
+                            contraseña?</a>
+                    </div>
+                    <div class="pt-4">
+                        <button
+                            class="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] shadow-md hover:shadow-lg hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300 hover:-translate-y-0.5">
+                            <span class="truncate">Iniciar sesión</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
