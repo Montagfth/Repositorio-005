@@ -1,1 +1,75 @@
 # Almacen de versiones viejas:
+# ==========================================
+# 🧠 ARCHIVOS GENERALES DE SISTEMA
+# ==========================================
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 🧰 IDEs Y EDITORES
+# ==========================================
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+.history/
+*.code-workspace
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# ==========================================
+# 🧱 BUILD Y DEPENDENCIAS
+# ==========================================
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+bin/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ==========================================
+# ⚙️ ARCHIVOS TEMPORALES Y LOGS
+# ==========================================
+# Logs
+*.log
+
+# Archivos temporales del sistema o del editor
+*.tmp
+*.swp
+*.swo
+
+# ==========================================
+# 🔒 CONFIGURACIÓN SENSIBLE
+# ==========================================
+# Variables de entorno, configuración local
+.env
+application-local.properties
+application-dev.properties
+application-secret.yml
+
+# ==========================================
+# 🧩 FRONTEND (si usas Tailwind o npm)
+# ==========================================
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==========================================
+# ✅ OTROS
+# ==========================================
+# Archivos de respaldo o autoguardado
+*~
+*.bak
+*.old
