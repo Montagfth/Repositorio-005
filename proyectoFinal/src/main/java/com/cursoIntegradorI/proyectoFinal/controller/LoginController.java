@@ -8,11 +8,15 @@ public class LoginController {
 
     @GetMapping("/")
     public String mostrarLogin() {
-        return "calendar"; // Busca templates/login.html
+        return "login"; // Busca templates/login.html
     }
 
     @GetMapping("/login")
     public String login() {
         return "login";
     }
+
+    @GetMapping("/calendar")
+    public String calendar(){return "calendar";}
+
 }
