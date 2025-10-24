@@ -9,8 +9,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "proyectos")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Proyecto {

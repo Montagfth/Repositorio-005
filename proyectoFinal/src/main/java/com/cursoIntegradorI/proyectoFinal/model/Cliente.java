@@ -8,8 +8,6 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "clientes")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cliente {
