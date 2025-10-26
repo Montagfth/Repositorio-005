@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Proyectos - SC LLAMKAY SAC</title>
+
+    <!-- Tailwind y Material Icons -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1A237E",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "accent-orange": "#FF9800",
+                        "accent-green": "#4CAF50",
+                        "accent-red": "#F44336"
+                    },
+                    fontFamily: { display: ["Manrope", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+
+    <div class="layout-container flex h-full grow flex-row">
+        <!-- Sidebar importado -->
+        <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+
+        <!-- Contenido principal -->
+        <main class="flex-1 p-6 lg:p-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex-1 flex flex-col gap-6">
+                    <div class="flex flex-wrap justify-between items-center gap-3">
+                        <div class="flex flex-col gap-1">
+                            <h1 class="text-gray-900 dark:text-white text-3xl font-black tracking-tight">Calendario de Proyectos</h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-base">SC LLAMKAY SAC</p>
+                        </div>
+                    </div>
+
+                    <!-- Filtros de búsqueda -->
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1">
+                            <label class="flex flex-col min-w-40 h-12 w-full">
+                                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+                                    <div class="text-gray-500 dark:text-gray-400 flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                        <span class="material-symbols-outlined mr-4">search</span>
+                                    </div>
+                                    <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 h-full placeholder:text-gray-500 dark:placeholder-text-gray-400 px-4 text-base font-normal leading-normal" placeholder="Buscar un proyecto..." value=""/>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="flex gap-3 items-center">
+                            <button class="flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm font-medium">Tipo de Proyecto</p>
+                                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">arrow_drop_down</span>
+                            </button>
+                            <button class="flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm font-medium">Estado</p>
+                                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">arrow_drop_down</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Aquí se inserta el calendario dinámico -->
+                    <section th:replace="~{fragments/calendar :: calendar}"></section>
+                </div>
+
+                <!-- Panel lateral de resumen -->
+                <div class="w-full lg:w-80 flex flex-col gap-6">
+                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Resumen de Proyectos</h2>
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
+                        <div class="flex items-start gap-4 items-center">
+                            <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-lg flex">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">workspaces</span>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white">12</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Proyectos Activos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
+                        <div class="flex items-start gap-4 items-center">
+                            <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg flex">
+                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">hourglass_top</span>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white">5</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">En Progreso</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
+                        <div class="flex items-start gap-4 items-center">
+                            <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-lg flex">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400">task_alt</span>
+                            </div>
+                            <div>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white">28</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Finalizados</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>

@@ -27,7 +27,7 @@ public class SecurityConfig {
                 // 🧩 Configuración del login personalizado
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/calendar", true)
+                        .defaultSuccessUrl("/principal", true)
                         .permitAll()
                 )
                 // 🚪 Configuración del logout
