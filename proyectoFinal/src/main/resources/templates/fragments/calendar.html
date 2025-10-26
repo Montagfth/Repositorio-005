@@ -3,16 +3,14 @@
         <div class="flex flex-col h-full">
             <!-- Encabezado -->
             <div class="relative flex items-center justify-between w-full">
-                <!-- Flecha izquierda -->
                 <a th:href="@{/principal(offset=${(offset ?: 0) - 1})}"
                     class="absolute left-0 text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
                     <span class="material-symbols-outlined">chevron_left</span>
                 </a>
-                <!-- Texto centrado -->
+
                 <p class="mx-auto text-gray-900 dark:text-white text-lg font-bold leading-tight text-center"
                     th:text="${#strings.capitalize(nombreMes)} + ' ' + ${año}"></p>
 
-                <!-- Flecha derecha -->
                 <a th:href="@{/principal(offset=${(offset ?: 0) + 1})}"
                     class="absolute right-0 text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
                     <span class="material-symbols-outlined">chevron_right</span>
@@ -21,8 +19,6 @@
 
             <!-- Cabecera de días -->
             <div class="grid grid-cols-7 gap-1 mt-2">
-
-                <!-- Cambio de columnas para la fecha: Inicia con domingo -->
                 <p
                     class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">
                     Lun</p>
@@ -44,7 +40,6 @@
                 <p
                     class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">
                     Dom</p>
-
             </div>
 
             <!-- Celdas del calendario -->
@@ -53,16 +48,7 @@
                     class="relative flex flex-col border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md group"
                     style="height: calc((90vh - 12rem) / 6);">
 
-                    <!-- NOTA: Para agregar contenido en el calendario y se muestre como fondo, jugar con esta linea: -->
-                    <!-- <div th:text="${dia}" class="font-medium"></div> -->
-
-                    <!-- Tooltip "Ver" -->
-                    <button
-                        class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-sm">
-                        Ver
-                    </button>
-
-                    <span th:text="${dia.dayOfMonth}"></span>
+                    <span th:text="${dia.dayOfMonth}" class="font-semibold"></span>
 
                     <!-- Mostrar proyectos del día -->
                     <div th:each="proyecto : ${proyectos}"
@@ -70,8 +56,80 @@
                         class="bg-blue-200 dark:bg-blue-800 rounded px-1 py-0.5 text-xs text-blue-800 dark:text-blue-200 mt-1 cursor-pointer">
                         <span th:text="${proyecto.nombre}"></span>
                     </div>
+
+                    <!-- Botón "Ver" (pasa el día al modal) -->
+                    <button type="button"
+                        class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-sm"
+                        th:onclick="'mostrarModal(' + ${dia.dayOfMonth} + ')'">
+                        Ver
+                    </button>
+
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ---------- Modal único (fuera del loop) ---------- -->
+    <div id="modalCalendario"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+        <div
+            class="modal-box bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-md p-6 text-gray-800 dark:text-gray-200 transform scale-95 transition-transform duration-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold">Detalles del Día</h2>
+                <!-- <button type="button" onclick="cerrarModal()"
+                    class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    ✕
+                </button> -->
+            </div>
+
+            <div id="modalContenido" class="text-sm">
+                Aquí puedes mostrar la información del día, proyectos o eventos.
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button type="button" onclick="cerrarModal()"
+                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm hover:bg-gray-300 dark:hover:bg-gray-600">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Script (puede ir al final del fragmento o en JS separado) -->
+    <!-- Funcionalidades con JavaScript -->
+    <!-- <script th:src="@{/js/function-calendar.js}"></script> -->
+    <script>
+        function mostrarModal(dia) {
+            const modal = document.getElementById("modalCalendario");
+            const contenido = document.getElementById("modalContenido");
+
+            contenido.textContent = "Has seleccionado el día: " + dia;
+
+            // Mostrar modal
+            modal.classList.remove("opacity-0", "pointer-events-none");
+            modal.classList.add("opacity-100");
+
+            // animación scale
+            const modalBox = modal.querySelector(".modal-box");
+            modalBox.classList.remove("scale-95");
+            modalBox.classList.add("scale-100");
+        }
+
+        function cerrarModal() {
+            const modal = document.getElementById("modalCalendario");
+            const modalBox = modal.querySelector(".modal-box");
+
+            modal.classList.add("opacity-0", "pointer-events-none");
+            modal.classList.remove("opacity-100");
+
+            modalBox.classList.add("scale-95");
+            modalBox.classList.remove("scale-100");
+        }
+
+        // Cerrar al hacer clic fuera del modal (backdrop)
+        document.getElementById("modalCalendario").addEventListener("click", function (e) {
+            if (e.target === this) {
+                cerrarModal();
+            }
+        });
+    </script>
 </div>
