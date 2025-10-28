@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>SC LLAMKAY SAC - Iniciar Sesión</title>
+    <link rel="shortcut icon" href="../static/img/Logo.png">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -30,10 +31,20 @@
                     fontFamily: {
                         display: ["Manrope", "sans-serif"],
                     },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                    animation: {
+                        slideUp: 'slideUp 0.8s ease-out',
+                    },
                 },
             },
         };
     </script>
+
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display">
@@ -41,15 +52,10 @@
         style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDqvFMhHgGdu9ycMbKsSCMEPHo5RQwQZdq2r7fA7UU5puOo3JOBC1YjB-5sgejuzFRiu4GrWKpftULfbt1F04j_rV3lHhjN1SwNoC7HX38L4DijnQvkM2HVvHCRfhz9ytV1zL3JtBi36HNOWmauZ4mmKjEd6EmfUv69nlDQppVW3OvFz3UCl8VhOHJsQJ-aG_qxbC7AvD-bewhggLKQpzwQGyS8ZgxFjWA8GSCcKT43oc3efTQmfQUz3Q5zx6l4yLKrA8AkXa6SzHo');">
         <div class="absolute inset-0 bg-background-light/80 dark:bg-background-dark/90"></div>
 
-        <div class="relative flex w-full max-w-md flex-col items-center justify-center p-8">v
+        <div class="relative flex w-full max-w-md flex-col items-center justify-center p-8">
             <div class="mb-8 flex flex-col items-center">
-                <!-- Contenedor de Logo de la empresa: -->
-                <div class="w-24 h-24 mb-4 rounded-full overflow-hidden border-4 border-primary shadow-lg">
-                    <img src="/proyectoFinal/src/main/resources/static/img/Logo.png" alt="Logo LLAMKAY SAC"
-                        class="w-full h-full object-cover" />
-                </div>
                 <!-- Texto de bienvenida: -->
-                <h1 class="text-[#111618] dark:text-white text-3xl font-bold leading-tight text-center">
+                <h1 class="text-[#111618] dark:text-white text-3xl font-bold leading-tight text-center animate-slideUp">
                     ¡Bienvenido!
                 </h1>
             </div>

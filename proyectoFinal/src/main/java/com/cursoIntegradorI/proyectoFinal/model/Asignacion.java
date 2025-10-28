@@ -14,6 +14,7 @@ public class Asignacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idAsignacion")
     private Integer idAsignacion;
 
     @ManyToOne
