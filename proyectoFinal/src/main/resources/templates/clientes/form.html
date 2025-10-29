@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title th:text="${cliente.idCliente != null ? 'Editar Cliente' : 'Nuevo Cliente'} + ' - SC LLAMKAY SAC'">Cliente - SC LLAMKAY SAC</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1193d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-200">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-6">
+    <div aria-hidden="true" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-900/60 backdrop-blur-sm"></div>
+
+    <!-- Formulario -->
+    <form th:action="@{/clientes/guardar}" method="post" th:object="${cliente}"
+          class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden my-8">
+
+        <!-- Header -->
+        <div class="p-6 sm:p-8 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex flex-wrap justify-between items-start gap-3">
+                <div class="flex flex-col gap-1">
+                    <p class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-black leading-tight tracking-[-0.03em]"
+                       th:text="${cliente.idCliente != null ? 'Editar Cliente' : 'Nuevo Cliente'}">Nuevo Cliente</p>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base font-normal leading-normal">
+                        Complete la información del cliente.</p>
+                </div>
+                <a th:href="@{/clientes}"
+                   class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6 sm:p-8 max-h-[calc(100vh-220px)] overflow-y-auto">
+            <div class="flex flex-col gap-6">
+                <!-- ID oculto -->
+                <input type="hidden" th:field="*{idCliente}" />
+
+                <!-- Nombre -->
+                <label class="flex flex-col w-full">
+                    <p class="text-slate-900 dark:text-slate-300 text-base font-medium leading-normal pb-2">
+                        Nombre del Cliente <span class="text-red-500">*</span>
+                    </p>
+                    <input th:field="*{nombre}" required
+                           class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal transition-shadow"
+                           placeholder="Ej. Corporación XYZ S.A.C." />
+                </label>
+
+                <!-- RUC -->
+                <label class="flex flex-col w-full">
+                    <p class="text-slate-900 dark:text-slate-300 text-base font-medium leading-normal pb-2">
+                        RUC <span class="text-red-500">*</span>
+                    </p>
+                    <input th:field="*{ruc}" required maxlength="11"
+                           class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal transition-shadow"
+                           placeholder="20123456789" />
+                </label>
+
+                <!-- Dirección -->
+                <label class="flex flex-col w-full">
+                    <p class="text-slate-900 dark:text-slate-300 text-base font-medium leading-normal pb-2">
+                        Dirección
+                    </p>
+                    <input th:field="*{direccion}"
+                           class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal transition-shadow"
+                           placeholder="Av. Ejemplo 123, Lima" />
+                </label>
+
+                <!-- Grid 2 columnas: Teléfono y Correo -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Teléfono -->
+                    <label class="flex flex-col w-full">
+                        <p class="text-slate-900 dark:text-slate-300 text-base font-medium leading-normal pb-2">
+                            Teléfono
+                        </p>
+                        <input th:field="*{telefono}" type="tel"
+                               class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal transition-shadow"
+                               placeholder="+51 987 654 321" />
+                    </label>
+
+                    <!-- Correo -->
+                    <label class="flex flex-col w-full">
+                        <p class="text-slate-900 dark:text-slate-300 text-base font-medium leading-normal pb-2">
+                            Correo Electrónico
+                        </p>
+                        <input th:field="*{correo}" type="email"
+                               class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:border-primary h-14 placeholder:text-slate-500 p-[15px] text-base font-normal leading-normal transition-shadow"
+                               placeholder="contacto@empresa.com" />
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer con botones -->
+        <div class="flex flex-col sm:flex-row justify-end items-center gap-4 p-6 sm:p-8 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
+            <a th:href="@{/clientes}"
+               class="w-full sm:w-auto px-6 py-3 rounded-lg text-center font-semibold text-slate-900 dark:text-white bg-transparent hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                Cancelar
+            </a>
+            <button type="submit"
+                    class="w-full sm:w-auto px-6 py-3 rounded-lg text-center font-semibold text-white bg-primary hover:bg-primary/90 transition-colors shadow-sm">
+                <span th:text="${cliente.idCliente != null ? 'Actualizar Cliente' : 'Crear Cliente'}">Crear Cliente</span>
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

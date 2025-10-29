@@ -1,62 +1,63 @@
-<!-- sidebar.html -->
 <div th:fragment="sidebar"
-    class="flex flex-col w-64 h-screen bg-white dark:bg-gray-900 p-4 border-r border-gray-200 dark:border-gray-700 overflow-hidden">
-    <!-- NOTA: Agregacion de "h-screen" y "overflow-hidden" para mejor aguste del contenido en la pantalla. -->
+     class="flex flex-col w-64 h-screen bg-white dark:bg-gray-900 p-4 border-r border-gray-200 dark:border-gray-700 overflow-hidden">
+
     <!-- Perfil del usuario -->
     <div class="flex items-center gap-3 mb-8">
         <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12"
-            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLxi9wUkLYLMCeWsdmpfU1ebLr7lRiDHlnneVQTtOQP3PHhbVmDwbthc0m4kDHwTzAyfEUWLlXv0nCN33h65SKaSGjjKeRyb55JNmMIO_0H-hlssxgkIn8U7cCAY5RRNuehZakJqGNedQtu0E4_NBVvvBy9kL1XpVlatwRGgwGAi4R7FrQRZKTYjxSMpaLMTZZ64u8HQt2Pl8V9eFY_Ng89epmZDIdvW0lOW5fzLQCZLHFL7B1r-e_m_cwDiYsYbcW3GBsVqi_4eo");'>
+             style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLxi9wUkLYLMCeWsdmpfU1ebLr7lRiDHlnneVQTtOQP3PHhbVmDwbthc0m4kDHwTzAyfEUWLlXv0nCN33h65SKaSGjjKeRyb55JNmMIO_0H-hlssxgkIn8U7cCAY5RRNuehZakJqGNedQtu0E4_NBVvvBy9kL1XpVlatwRGgwGAi4R7FrQRZKTYjxSMpaLMTZZ64u8HQt2Pl8V9eFY_Ng89epmZDIdvW0lOW5fzLQCZLHFL7B1r-e_m_cwDiYsYbcW3GBsVqi_4eo");'>
         </div>
         <div class="flex flex-col">
-            <h1 class="text-gray-900 dark:text-white text-lg font-bold">Usuario_Empresa</h1>
+            <h1 class="text-gray-900 dark:text-white text-lg font-bold"
+                th:text="${#authentication.name}">Usuario</h1>
             <p class="text-gray-500 dark:text-gray-400 text-sm">SC LLAMKAY SAC</p>
         </div>
     </div>
 
-    <!-- Menú de navegación -->
+    <!-- Menú principal -->
     <nav class="flex flex-col gap-2 flex-1">
-        <a href="#"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-white transition-transform duration-200 hover:scale-105">
+        <!-- Opción 1: Usar atributo th:classappend con variable del controlador -->
+        <a th:href="@{/principal}"
+           th:classappend="${currentPage == 'principal' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
             <span class="material-symbols-outlined">calendar_month</span>
             <p class="text-sm font-medium">Calendario</p>
         </a>
-        <a href="#"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">briefcase_meal</span>
+
+        <a th:href="@{/proyectos}"
+           th:classappend="${currentPage == 'proyectos' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
+            <span class="material-symbols-outlined">workspaces</span>
             <p class="text-sm font-medium">Proyectos</p>
         </a>
-        <a href="#"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">task_alt</span>
-            <p class="text-sm font-medium">Tareas</p>
-        </a>
-        <a href="#"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">group</span>
-            <p class="text-sm font-medium">Equipos</p>
-        </a>
-        <!-- Crear botones de accionamiento con pop-ups -->
-        <a href="#"
-            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
+
+        <a th:href="@{/reportes}"
+           th:classappend="${currentPage == 'reportes' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
             <span class="material-symbols-outlined">summarize</span>
             <p class="text-sm font-medium">Reportes</p>
         </a>
+        <a th:href="@{/clientes}"
+           th:classappend="${currentPage == 'clientes' ? 'bg-primary/10...' : ''}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg...">
+            <span class="material-symbols-outlined">group</span>
+            <p class="text-sm font-medium">Clientes</p>
+        </a>
     </nav>
 
-    <!-- Botones inferiores -->
-    <div class="flex flex-col gap-2">
-        <button
-            class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-green text-white text-sm font-bold hover:bg-accent-green/90 transition-transform duration-200 hover:-translate-y-0.5">
+    <!-- Botones inferiores agrupados -->
+    <div class="flex flex-col gap-2 mt-auto">
+        <a th:href="@{/proyectos/nuevo}"
+           class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-green text-white text-sm font-bold hover:bg-accent-green/90 transition-transform duration-200 hover:-translate-y-1">
             <span class="material-symbols-outlined">add</span>
             <span>Crear Proyecto</span>
-        </button>
-        <button
-            class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-orange text-white text-sm font-bold hover:bg-accent-orange/90 transition-transform duration-200 hover:-translate-y-0.5">
+        </a>
+        <button onclick="alert('Selecciona un proyecto primero')"
+                class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-orange text-white text-sm font-bold hover:bg-accent-orange/90 transition-transform duration-200 hover:-translate-y-1">
             <span class="material-symbols-outlined">edit</span>
             <span>Editar Proyecto</span>
         </button>
-        <button
-            class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-red text-white text-sm font-bold hover:bg-accent-red/90 transition-transform duration-200 hover:-translate-y-0.5">
+        <button onclick="alert('Selecciona un proyecto primero')"
+                class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-red text-white text-sm font-bold hover:bg-accent-red/90 transition-transform duration-200 hover:-translate-y-1">
             <span class="material-symbols-outlined">delete</span>
             <span>Eliminar Proyecto</span>
         </button>

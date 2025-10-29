@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gestión de Clientes - SC LLAMKAY SAC</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1193d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "danger": "#D32F2F"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+    <div class="flex min-h-screen">
+        <!-- Sidebar importado -->
+        <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <div class="w-full max-w-7xl mx-auto">
+                <!-- Mensajes flash -->
+                <div th:if="${success}" class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 rounded-lg flex items-center gap-3">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    <span th:text="${success}"></span>
+                </div>
+                <div th:if="${error}" class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg flex items-center gap-3">
+                    <span class="material-symbols-outlined">error</span>
+                    <span th:text="${error}"></span>
+                </div>
+
+                <!-- Page Heading -->
+                <div class="flex flex-wrap justify-between gap-3 items-center mb-6">
+                    <h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-[-0.033em]">Gestión de Clientes</h1>
+                </div>
+
+                <!-- Toolbar / Search Bar -->
+                <div class="flex flex-col md:flex-row justify-between gap-4 p-4 rounded-xl bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 mb-6">
+                    <div class="flex-1 min-w-[250px]">
+                        <label class="flex flex-col w-full">
+                            <div class="flex w-full flex-1 items-stretch rounded-lg h-12">
+                                <div class="text-slate-500 dark:text-slate-400 flex bg-background-light dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg">
+                                    <span class="material-symbols-outlined">search</span>
+                                </div>
+                                <input id="searchInput" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-slate-900 dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary focus:ring-inset border-none bg-background-light dark:bg-slate-800 h-full placeholder:text-slate-500 dark:placeholder:text-slate-400 px-4 pl-2 text-base font-normal leading-normal"
+                                       placeholder="Buscar por nombre, RUC o correo..." value=""/>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a th:href="@{/clientes/nuevo}" class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+                            <span class="material-symbols-outlined text-base">add</span>
+                            <span class="truncate">Crear Cliente</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Clients Table -->
+                <div class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
+                            <tr>
+                                <th class="p-4 w-12">
+                                    <input id="selectAll" class="form-checkbox rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary/50" type="checkbox"/>
+                                </th>
+                                <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Nombre</th>
+                                <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">RUC</th>
+                                <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Contacto</th>
+                                <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Dirección</th>
+                                <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-right">Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="cliente : ${clientes}"
+                                class="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td class="p-4">
+                                    <input class="cliente-checkbox form-checkbox rounded border-slate-300 dark:border-slate-600 bg-transparent text-primary focus:ring-primary/50"
+                                           type="checkbox"
+                                           th:data-id="${cliente.idCliente}"/>
+                                </td>
+                                <td class="p-4 text-slate-800 dark:text-slate-200 font-medium" th:text="${cliente.nombre}">Nombre</td>
+                                <td class="p-4 text-slate-600 dark:text-slate-400" th:text="${cliente.ruc}">RUC</td>
+                                <td class="p-4 text-slate-600 dark:text-slate-400">
+                                    <div class="flex flex-col gap-1">
+                                        <span th:if="${cliente.correo}" th:text="${cliente.correo}">correo@example.com</span>
+                                        <span th:if="${cliente.telefono}" th:text="${cliente.telefono}">Teléfono</span>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-slate-600 dark:text-slate-400" th:text="${cliente.direccion ?: '-'}">Dirección</td>
+                                <td class="p-4">
+                                    <div class="flex justify-end gap-2">
+                                        <a th:href="@{/clientes/editar/{id}(id=${cliente.idCliente})}"
+                                           class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg hover:text-slate-800 dark:hover:text-slate-100 transition-colors"
+                                           title="Editar">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </a>
+                                        <button onclick="confirmarEliminar([[${cliente.idCliente}]], '[[${cliente.nombre}]]')"
+                                                class="p-2 text-slate-500 dark:text-slate-400 hover:bg-danger/10 dark:hover:bg-danger/20 rounded-lg hover:text-danger transition-colors"
+                                                title="Eliminar">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Empty State -->
+                            <tr th:if="${#lists.isEmpty(clientes)}">
+                                <td colspan="6">
+                                    <div class="text-center p-16">
+                                        <span class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-700">group_off</span>
+                                        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mt-4">Aún no hay clientes registrados</h3>
+                                        <p class="text-slate-500 dark:text-slate-400 mt-2 mb-6">¡Crea el primero para empezar a gestionar tus proyectos!</p>
+                                        <a th:href="@{/clientes/nuevo}"
+                                           class="inline-flex items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
+                                            <span class="material-symbols-outlined text-base">add</span>
+                                            <span class="truncate">Crear Cliente</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Footer -->
+                    <div th:if="${!#lists.isEmpty(clientes)}" class="flex justify-between items-center p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
+                        <span class="text-sm text-slate-600 dark:text-slate-400">
+                            Mostrando <span th:text="${#lists.size(clientes)}">0</span> cliente(s)
+                        </span>
+                        <div class="flex gap-2">
+                            <button class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg hover:text-slate-800 dark:hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled>
+                                <span class="material-symbols-outlined">chevron_left</span>
+                            </button>
+                            <button class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg hover:text-slate-800 dark:hover:text-slate-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    disabled>
+                                <span class="material-symbols-outlined">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div id="modalEliminar" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-lg w-[90%] max-w-md p-6 transform scale-95 transition-transform duration-200">
+        <div class="flex items-start gap-4 mb-4">
+            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl">warning</span>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-1">¿Eliminar cliente?</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                    ¿Estás seguro de que deseas eliminar al cliente <strong id="nombreCliente"></strong>? Esta acción no se puede deshacer.
+                </p>
+            </div>
+        </div>
+        <div class="flex justify-end gap-3 mt-6">
+            <button onclick="cerrarModalEliminar()"
+                    class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+                Cancelar
+            </button>
+            <a id="btnConfirmarEliminar" href="#"
+               class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                Eliminar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Búsqueda en tiempo real
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr:not(:last-child)');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    // Seleccionar todos los checkboxes
+    document.getElementById('selectAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.cliente-checkbox');
+        checkboxes.forEach(cb => cb.checked = this.checked);
+        actualizarBotonesSeleccion();
+    });
+
+    // Actualizar botones de editar/eliminar según selección
+    document.querySelectorAll('.cliente-checkbox').forEach(cb => {
+        cb.addEventListener('change', actualizarBotonesSeleccion);
+    });
+
+    function actualizarBotonesSeleccion() {
+        const checkboxes = document.querySelectorAll('.cliente-checkbox:checked');
+        const btnEditar = document.getElementById('btnEditarSeleccionado');
+        const btnEliminar = document.getElementById('btnEliminarSeleccionado');
+
+        if (checkboxes.length === 1) {
+            btnEditar.disabled = false;
+            btnEliminar.disabled = false;
+            const id = checkboxes[0].dataset.id;
+            btnEditar.onclick = () => window.location.href = `/clientes/editar/${id}`;
+            btnEliminar.onclick = () => {
+                const row = checkboxes[0].closest('tr');
+                const nombre = row.querySelector('td:nth-child(2)').textContent;
+                confirmarEliminar(id, nombre);
+            };
+        } else if (checkboxes.length > 1) {
+            btnEditar.disabled = true;
+            btnEliminar.disabled = false;
+            btnEliminar.onclick = () => alert('Eliminación múltiple no implementada');
+        } else {
+            btnEditar.disabled = true;
+            btnEliminar.disabled = true;
+        }
+    }
+
+    // Modal de eliminación
+    function confirmarEliminar(id, nombre) {
+        const modal = document.getElementById('modalEliminar');
+        const nombreCliente = document.getElementById('nombreCliente');
+        const btnConfirmar = document.getElementById('btnConfirmarEliminar');
+
+        nombreCliente.textContent = nombre;
+        btnConfirmar.href = '/clientes/eliminar/' + id;
+
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        modal.querySelector('div').classList.remove('scale-95');
+        modal.querySelector('div').classList.add('scale-100');
+    }
+
+    function cerrarModalEliminar() {
+        const modal = document.getElementById('modalEliminar');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100');
+        modal.querySelector('div').classList.add('scale-95');
+        modal.querySelector('div').classList.remove('scale-100');
+    }
+
+    // Cerrar modal al hacer clic fuera
+    document.getElementById('modalEliminar').addEventListener('click', function(e) {
+        if (e.target === this) {
+            cerrarModalEliminar();
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -38,6 +38,14 @@
 
         <!-- Contenido principal -->
         <main class="flex-1 p-6 lg:p-8">
+            <!-- Mensajes flash -->
+            <div th:if="${success}" class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 rounded-lg">
+                <span th:text="${success}"></span>
+            </div>
+            <div th:if="${error}" class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg">
+                <span th:text="${error}"></span>
+            </div>
+
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="flex-1 flex flex-col gap-6">
                     <div class="flex flex-wrap justify-between items-center gap-3">
@@ -53,7 +61,7 @@
                             <label class="flex flex-col min-w-40 h-12 w-full">
                                 <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
                                     <div class="text-gray-500 dark:text-gray-400 flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 items-center justify-center pl-4 rounded-l-lg border-r-0">
-                                        <span class="material-symbols-outlined mr-4">search</span>
+                                        <span class="material-symbols-outlined mr-4" >search</span>
                                     </div>
                                     <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 h-full placeholder:text-gray-500 dark:placeholder-text-gray-400 px-4 text-base font-normal leading-normal" placeholder="Buscar un proyecto..." value=""/>
                                 </div>
@@ -75,7 +83,7 @@
                     <section th:replace="~{fragments/calendar :: calendar}"></section>
                 </div>
 
-                <!-- Panel lateral de resumen -->
+                <!-- Panel lateral de resumen - ACTUALIZADO CON DATOS DINÁMICOS -->
                 <div class="w-full lg:w-80 flex flex-col gap-6">
                     <h2 class="text-lg font-bold text-gray-900 dark:text-white">Resumen de Proyectos</h2>
                     <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
@@ -84,7 +92,7 @@
                                 <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">workspaces</span>
                             </div>
                             <div>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white">12</p>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white" th:text="${proyectosActivos}">0</p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">Proyectos Activos</p>
                             </div>
                         </div>
@@ -95,7 +103,7 @@
                                 <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">hourglass_top</span>
                             </div>
                             <div>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white">5</p>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white" th:text="${proyectosEnProgreso}">0</p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">En Progreso</p>
                             </div>
                         </div>
@@ -106,7 +114,7 @@
                                 <span class="material-symbols-outlined text-green-600 dark:text-green-400">task_alt</span>
                             </div>
                             <div>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white">28</p>
+                                <p class="text-3xl font-bold text-gray-900 dark:text-white" th:text="${proyectosFinalizados}">0</p>
                                 <p class="text-sm text-gray-500 dark:text-gray-400">Finalizados</p>
                             </div>
                         </div>

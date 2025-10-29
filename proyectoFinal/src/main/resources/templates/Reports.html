@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Dashboard - SC LLAMKAY SAC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1193d4",
+                        "primary-hover": "#0e7ab8",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111618] dark:text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+    <div class="flex h-full grow">
+        <!-- Sidebar importado -->
+        <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+
+        <main class="flex-1 p-6">
+            <div class="layout-content-container flex flex-col max-w-full flex-1">
+                <div class="flex flex-wrap justify-between gap-3 p-4">
+                    <div class="flex min-w-72 flex-col gap-3">
+                        <p class="text-[#111618] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+                            Dashboard</p>
+                        <p class="text-[#617c89] dark:text-gray-400 text-base font-normal leading-normal">
+                            Welcome back, <span th:text="${#authentication.name}">User</span>!</p>
+                    </div>
+                    <a th:href="@{/proyectos/nuevo}"
+                       class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary-hover transition-transform transform hover:-translate-y-0.5 duration-200">
+                        <span class="truncate">Create New Project</span>
+                    </a>
+                </div>
+
+                <!-- MÉTRICAS ACTUALIZADAS CON DATOS DINÁMICOS -->
+                <div class="flex flex-wrap gap-4 p-4">
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#dbe2e6] dark:border-gray-700 bg-white dark:bg-background-dark">
+                        <p class="text-[#111618] dark:text-white text-base font-medium leading-normal">Projects in Progress</p>
+                        <p class="text-[#111618] dark:text-white tracking-light text-2xl font-bold leading-tight"
+                           th:text="${proyectosEnProgreso}">0</p>
+                        <p class="text-[#078836] text-base font-medium leading-normal">+2% vs last month</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#dbe2e6] dark:border-gray-700 bg-white dark:bg-background-dark">
+                        <p class="text-[#111618] dark:text-white text-base font-medium leading-normal">Tasks Completed</p>
+                        <p class="text-[#111618] dark:text-white tracking-light text-2xl font-bold leading-tight">
+                            <span th:text="${porcentajeTareasCompletadas}">0</span>%</p>
+                        <p class="text-[#078836] text-base font-medium leading-normal">+5% vs last month</p>
+                    </div>
+                    <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 border border-[#dbe2e6] dark:border-gray-700 bg-white dark:bg-background-dark">
+                        <p class="text-[#111618] dark:text-white text-base font-medium leading-normal">Recent Notifications</p>
+                        <p class="text-[#111618] dark:text-white tracking-light text-2xl font-bold leading-tight"
+                           th:text="${notificacionesRecientes}">0</p>
+                        <p class="text-[#617c89] dark:text-gray-400 text-base font-medium leading-normal">In the last 24h</p>
+                    </div>
+                </div>
+
+                <!-- Gráfico simplificado -->
+                <div class="flex flex-wrap gap-4 px-4 py-6">
+                    <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#dbe2e6] dark:border-gray-700 p-6 bg-white dark:bg-background-dark">
+                        <p class="text-[#111618] dark:text-white text-base font-medium leading-normal">Tasks Completed vs. Pending</p>
+                        <p class="text-[#111618] dark:text-white tracking-light text-[32px] font-bold leading-tight truncate">
+                            120</p>
+                        <div class="flex gap-1">
+                            <p class="text-[#617c89] dark:text-gray-400 text-base font-normal leading-normal">This Month</p>
+                            <p class="text-[#078836] text-base font-medium leading-normal">+10%</p>
+                        </div>
+                        <div class="grid min-h-[180px] grid-flow-col gap-6 grid-rows-[1fr_auto] items-end justify-items-center px-3">
+                            <div class="bg-primary/30 w-full rounded-t" style="height: 50%;"></div>
+                            <p class="text-[#617c89] dark:text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">Week 1</p>
+                            <div class="bg-primary/30 w-full rounded-t" style="height: 70%;"></div>
+                            <p class="text-[#617c89] dark:text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">Week 2</p>
+                            <div class="bg-primary/30 w-full rounded-t" style="height: 40%;"></div>
+                            <p class="text-[#617c89] dark:text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">Week 3</p>
+                            <div class="bg-primary w-full rounded-t" style="height: 85%;"></div>
+                            <p class="text-[#617c89] dark:text-gray-400 text-[13px] font-bold leading-normal tracking-[0.015em]">Week 4</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIVIDADES RECIENTES DINÁMICAS -->
+                <h2 class="text-[#111618] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
+                    Recent Activity</h2>
+                <div class="px-4">
+                    <div class="border rounded-lg border-[#dbe2e6] dark:border-gray-700 overflow-hidden bg-white dark:bg-background-dark">
+                        <div th:each="proyecto, iterStat : ${proyectosRecientes}"
+                             th:class="${!iterStat.last ? 'p-4 flex justify-between items-center border-b border-[#dbe2e6] dark:border-gray-700' : 'p-4 flex justify-between items-center'}">
+                            <p class="text-[#111618] dark:text-white font-medium">
+                                <span th:text="${proyecto.nombre}">Proyecto</span> -
+                                <span th:text="${proyecto.estado}">Estado</span>
+                            </p>
+                            <p class="text-[#617c89] dark:text-gray-400 text-sm">
+                                <span th:text="${#temporals.format(proyecto.fechaInicio, 'dd/MM/yyyy')}">Fecha</span>
+                            </p>
+                        </div>
+                        <div th:if="${#lists.isEmpty(proyectosRecientes)}" class="p-4 text-center text-gray-500">
+                            No hay actividad reciente
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
