@@ -23,6 +23,7 @@ public class ReportesController {
 
     @GetMapping
     public String mostrarReportes(Model model) {
+        model.addAttribute("currentPage", "reportes");
         List<Proyecto> todosLosProyectos = proyectoService.listarTodos();
 
         // Calcular métricas generales

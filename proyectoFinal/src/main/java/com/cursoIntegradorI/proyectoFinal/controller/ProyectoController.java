@@ -1,8 +1,10 @@
 package com.cursoIntegradorI.proyectoFinal.controller;
 
 import com.cursoIntegradorI.proyectoFinal.model.Proyecto;
+import com.cursoIntegradorI.proyectoFinal.service.PersonalService;
 import com.cursoIntegradorI.proyectoFinal.service.ProyectoService;
 import com.cursoIntegradorI.proyectoFinal.service.ClienteService;
+import com.cursoIntegradorI.proyectoFinal.service.ServicioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +18,15 @@ public class ProyectoController {
 
     private final ProyectoService proyectoService;
     private final ClienteService clienteService;
+    private final ServicioService servicioService;
+    private final PersonalService personalService;
 
     /**
      * Lista todos los proyectos
      */
     @GetMapping
     public String listar(Model model) {
+        model.addAttribute("currentPage", "proyectos");
         model.addAttribute("proyectos", proyectoService.listarTodos());
         return "proyectos/lista";
     }
@@ -33,7 +38,7 @@ public class ProyectoController {
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("proyecto", new Proyecto());
         model.addAttribute("clientes", clienteService.listarTodos());
-        return "proyectos";
+        return "proyectos/proyectos";
     }
 
     /**
@@ -45,7 +50,7 @@ public class ProyectoController {
                 .map(proyecto -> {
                     model.addAttribute("proyecto", proyecto);
                     model.addAttribute("clientes", clienteService.listarTodos());
-                    return "proyectos";
+                    return "proyectos/proyectos";
                 })
                 .orElseGet(() -> {
                     redirectAttributes.addFlashAttribute("error", "Proyecto no encontrado");
@@ -59,12 +64,34 @@ public class ProyectoController {
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute Proyecto proyecto, RedirectAttributes redirectAttributes) {
         try {
-            proyectoService.guardar(proyecto);
+            Proyecto proyectoGuardado = proyectoService.guardar(proyecto);
             redirectAttributes.addFlashAttribute("success", "Proyecto guardado exitosamente");
+            // Redirigir al detalle del proyecto
+            return "redirect:/proyectos/detalle/" + proyectoGuardado.getIdProyecto();
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al guardar el proyecto: " + e.getMessage());
+            return "redirect:/principal";
         }
-        return "redirect:/principal";
+    }
+
+    /**
+     * Muestra el detalle completo de un proyecto con sus servicios y asignaciones
+     */
+    @GetMapping("/detalle/{id}")
+    public String verDetalle(@PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
+        return proyectoService.buscarPorId(id)
+                .map(proyecto -> {
+                    model.addAttribute("currentPage", "proyectos");
+                    model.addAttribute("proyecto", proyecto);
+                    // Cargar servicios del proyecto con sus asignaciones
+                    model.addAttribute("servicios", servicioService.buscarPorProyecto(id));
+                    model.addAttribute("personalDisponible", personalService.listarTodos());
+                    return "proyectos/detalle";
+                })
+                .orElseGet(() -> {
+                    redirectAttributes.addFlashAttribute("error", "Proyecto no encontrado");
+                    return "redirect:/principal";
+                });
     }
 
     /**

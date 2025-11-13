@@ -1,3 +1,4 @@
+<!-- fragments/sidebar.html - CORREGIDO -->
 <div th:fragment="sidebar"
      class="flex flex-col w-64 h-screen bg-white dark:bg-gray-900 p-4 border-r border-gray-200 dark:border-gray-700 overflow-hidden">
 
@@ -15,7 +16,6 @@
 
     <!-- Menú principal -->
     <nav class="flex flex-col gap-2 flex-1">
-        <!-- Opción 1: Usar atributo th:classappend con variable del controlador -->
         <a th:href="@{/principal}"
            th:classappend="${currentPage == 'principal' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
@@ -30,17 +30,25 @@
             <p class="text-sm font-medium">Proyectos</p>
         </a>
 
+        <a th:href="@{/clientes}"
+           th:classappend="${currentPage == 'clientes' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
+            <span class="material-symbols-outlined">group</span>
+            <p class="text-sm font-medium">Clientes</p>
+        </a>
+
+        <a th:href="@{/personal}"
+           th:classappend="${currentPage == 'personal' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
+            <span class="material-symbols-outlined">badge</span>
+            <p class="text-sm font-medium">Personal</p>
+        </a>
+
         <a th:href="@{/reportes}"
            th:classappend="${currentPage == 'reportes' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
             <span class="material-symbols-outlined">summarize</span>
             <p class="text-sm font-medium">Reportes</p>
-        </a>
-        <a th:href="@{/clientes}"
-           th:classappend="${currentPage == 'clientes' ? 'bg-primary/10...' : ''}"
-           class="flex items-center gap-3 px-3 py-2 rounded-lg...">
-            <span class="material-symbols-outlined">group</span>
-            <p class="text-sm font-medium">Clientes</p>
         </a>
     </nav>
 

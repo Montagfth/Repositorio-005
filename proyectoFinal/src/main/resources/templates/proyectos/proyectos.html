@@ -44,7 +44,7 @@
                         <p class="text-[#617c89] dark:text-gray-400 text-sm sm:text-base font-normal leading-normal">
                             Complete los detalles a continuación.</p>
                     </div>
-                    <a th:href="@{/principal}"
+                    <a th:href="@{/proyectos}"
                         class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         <span class="material-symbols-outlined">close</span>
                     </a>
@@ -88,21 +88,17 @@
                             <label class="flex flex-col w-full">
                                 <p class="text-[#111618] dark:text-gray-300 text-base font-medium leading-normal pb-2">
                                     Fecha de Inicio</p>
-                                <div class="relative w-2/5">
-                                    <input th:field="*{fechaInicio}" required
-                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary h-14 placeholder:text-[#617c89] p-[15px] text-base font-normal leading-normal transition-shadow pr-12"
-                                        type="date" />
-                                </div>
+                                <input th:field="*{fechaInicio}" required dir="ltr"
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary h-14 placeholder:text-[#617c89] p-[15px] text-base font-normal leading-normal transition-shadow"
+                                    type="date" />
                             </label>
-
+                            
                             <label class="flex flex-col w-full">
                                 <p class="text-[#111618] dark:text-gray-300 text-base font-medium leading-normal pb-2">
                                     Fecha de Fin</p>
-                                <div class="relative w-2/5">
-                                    <input th:field="*{fechaFin}"
-                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary h-14 placeholder:text-[#617c89] p-[15px] text-base font-normal leading-normal transition-shadow pr-12"
-                                        type="date" />
-                                </div>
+                                <input th:field="*{fechaFin}" required dir="ltr"
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111618] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#dbe2e6] dark:border-gray-600 bg-white dark:bg-gray-800 focus:border-primary h-14 placeholder:text-[#617c89] p-[15px] text-base font-normal leading-normal transition-shadow"
+                                    type="date" />
                             </label>
 
                             <label class="flex flex-col w-full">
@@ -204,6 +200,7 @@
                             Proyecto</span>
                     </button>
                 </div>
+            </div>
         </form>
     </div>
 </body>

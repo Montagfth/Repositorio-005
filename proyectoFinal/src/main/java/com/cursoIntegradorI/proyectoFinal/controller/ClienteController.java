@@ -17,14 +17,12 @@ public class ClienteController {
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("currentPage", "clientes");
         model.addAttribute("clientes", clienteService.listarTodos());
         return "clientes/lista";
     }
 
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
-        model.addAttribute("currentPage", "clientes");
         model.addAttribute("cliente", new Cliente());
         return "clientes/form";
     }
