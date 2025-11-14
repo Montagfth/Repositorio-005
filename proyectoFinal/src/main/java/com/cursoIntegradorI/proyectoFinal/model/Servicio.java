@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "servicios")
+@Table(name = "catalogo_servicios")  // ✅ Nombre más descriptivo
 @NoArgsConstructor
 @AllArgsConstructor
 public class Servicio {
@@ -17,15 +17,14 @@ public class Servicio {
     private Integer idServicio;
 
     private String tipoServicio;
+
+    @Column(length = 1000)
     private String descripcion;
-    private Double costoEstimado;
 
-    @ManyToOne
-    @JoinColumn(name = "idProyecto")
-    private Proyecto proyecto;
+    private Double costoBase;
 
-    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Asignacion> asignaciones;
+    @OneToMany(mappedBy = "servicio")
+    private List<ProyectoServicio> proyectosQueUsanEsteServicio;
 }
 
 

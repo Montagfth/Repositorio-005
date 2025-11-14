@@ -18,7 +18,10 @@ public class Proyecto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProyecto;
 
+    @Column(nullable = false, length = 200)
     private String nombre;
+
+    @Column(length = 2000)
     private String descripcion;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -27,17 +30,19 @@ public class Proyecto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaFin;
 
-    private String estado;
+    private String estado;  // ✅ Considerar ENUM
+
+    private Double presupuestoTotal;  // ✅ AGREGAR
 
     @ManyToOne
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Requerimiento> requerimientos;
+    @OneToMany(mappedBy = "proyecto", cascade = CascadeType.PERSIST)
+    private List<ProyectoServicio> servicios;
 
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Servicio> servicios;
+    private List<Requerimiento> requerimientos;
 
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Informe> informes;

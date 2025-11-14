@@ -16,10 +16,17 @@ public class Personal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPersonal;
 
+    @Column(nullable = false, length = 200)
     private String nombre;
+
     private String cargo;
+
+    @Column(unique = true)  // ✅ AGREGAR unique
     private String correo;
+
     private String telefono;
+
+    private Double tarifaEstimadaPorHora;  // ✅ AGREGAR: tarifa base de este empleado
 
     @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Asignacion> asignaciones;

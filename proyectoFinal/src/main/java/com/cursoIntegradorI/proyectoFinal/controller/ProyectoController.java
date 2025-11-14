@@ -5,6 +5,7 @@ import com.cursoIntegradorI.proyectoFinal.service.PersonalService;
 import com.cursoIntegradorI.proyectoFinal.service.ProyectoService;
 import com.cursoIntegradorI.proyectoFinal.service.ClienteService;
 import com.cursoIntegradorI.proyectoFinal.service.ServicioService;
+import com.cursoIntegradorI.proyectoFinal.service.ProyectoServicioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class ProyectoController {
     private final ClienteService clienteService;
     private final ServicioService servicioService;
     private final PersonalService personalService;
+    private final ProyectoServicioService proyectoServicioService;  // ✅ NUEVO
 
     /**
      * Lista todos los proyectos
@@ -75,7 +77,7 @@ public class ProyectoController {
     }
 
     /**
-     * Muestra el detalle completo de un proyecto con sus servicios y asignaciones
+     * ✅ ACTUALIZADO: Muestra el detalle completo de un proyecto con sus servicios y asignaciones
      */
     @GetMapping("/detalle/{id}")
     public String verDetalle(@PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
@@ -84,13 +86,13 @@ public class ProyectoController {
                     model.addAttribute("currentPage", "proyectos");
                     model.addAttribute("proyecto", proyecto);
 
-                    // Servicios ya vinculados
-                    model.addAttribute("servicios", servicioService.buscarPorProyecto(id));
+                    // ✅ NUEVO: ProyectoServicios (servicios ya asignados a este proyecto)
+                    model.addAttribute("serviciosProyecto", proyectoServicioService.listarPorProyecto(id));
 
-                    // Servicios disponibles del catálogo
-                    model.addAttribute("serviciosDisponibles", servicioService.listarNoAsignados(id));
+                    // ✅ NUEVO: Catálogo completo de servicios disponibles
+                    model.addAttribute("catalogoServicios", servicioService.listarCatalogo());
 
-                    // Personal disponible
+                    // Personal disponible para asignar
                     model.addAttribute("personalDisponible", personalService.listarTodos());
 
                     return "proyectos/detalle";
@@ -101,17 +103,66 @@ public class ProyectoController {
                 });
     }
 
-    @PostMapping("/proyectos/{id}/asignar-servicio")
+    /**
+     * ✅ ACTUALIZADO: Asigna un servicio del catálogo a este proyecto
+     * Crea una entrada en la tabla intermedia ProyectoServicio
+     */
+    @PostMapping("/{id}/asignar-servicio")
     public String asignarServicioAProyecto(
             @PathVariable("id") Integer idProyecto,
             @RequestParam("idServicio") Integer idServicio,
+            @RequestParam(value = "costoAcordado", required = false) Double costoAcordado,
+            @RequestParam(value = "observaciones", required = false) String observaciones,
             RedirectAttributes redirect
     ) {
         try {
-            servicioService.asignarServicioAProyecto(idProyecto, idServicio);
-            redirect.addFlashAttribute("success", "Servicio asignado correctamente.");
+            proyectoServicioService.asignarServicioAProyecto(idProyecto, idServicio, costoAcordado, observaciones);
+            redirect.addFlashAttribute("success", "Servicio asignado correctamente al proyecto");
         } catch (Exception e) {
             redirect.addFlashAttribute("error", "Error al asignar servicio: " + e.getMessage());
+        }
+
+        return "redirect:/proyectos/detalle/" + idProyecto;
+    }
+
+    /**
+     * ✅ NUEVO: Desvincula un servicio del proyecto
+     * Elimina la relación ProyectoServicio (y sus asignaciones en cascada)
+     */
+    @GetMapping("/{idProyecto}/desvincular-servicio/{idProyectoServicio}")
+    public String desvincularServicio(
+            @PathVariable Integer idProyecto,
+            @PathVariable Integer idProyectoServicio,
+            RedirectAttributes redirect
+    ) {
+        try {
+            proyectoServicioService.eliminar(idProyectoServicio);
+            redirect.addFlashAttribute("success", "Servicio desvinculado del proyecto");
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", "Error al desvincular servicio: " + e.getMessage());
+        }
+
+        return "redirect:/proyectos/detalle/" + idProyecto;
+    }
+
+    /**
+     * ✅ NUEVO: Actualiza datos específicos de un servicio en el proyecto
+     * (costo acordado, observaciones, estado)
+     */
+    @PostMapping("/{idProyecto}/actualizar-servicio/{idProyectoServicio}")
+    public String actualizarServicioProyecto(
+            @PathVariable Integer idProyecto,
+            @PathVariable Integer idProyectoServicio,
+            @RequestParam Double costoAcordado,
+            @RequestParam(required = false) String observaciones,
+            @RequestParam String estado,
+            RedirectAttributes redirect
+    ) {
+        try {
+            proyectoServicioService.actualizar(idProyectoServicio, costoAcordado, observaciones, estado);
+            redirect.addFlashAttribute("success", "Servicio actualizado correctamente");
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", "Error al actualizar servicio: " + e.getMessage());
         }
 
         return "redirect:/proyectos/detalle/" + idProyecto;

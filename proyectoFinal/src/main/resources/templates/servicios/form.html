@@ -27,109 +27,109 @@
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-200">
-    <div class="relative flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-6">
-        <div aria-hidden="true" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-900/60 backdrop-blur-sm"></div>
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-6">
+    <div aria-hidden="true" class="fixed inset-0 bg-slate-900/40 dark:bg-slate-900/60 backdrop-blur-sm"></div>
 
-        <!-- Formulario -->
-        <form th:action="@{/servicios/guardar}" method="post" th:object="${servicio}"
-            class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden my-8">
+    <!-- Formulario -->
+    <form th:action="@{/servicios/guardar}" method="post" th:object="${servicio}"
+          class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-xl shadow-2xl overflow-hidden my-8">
 
-            <!-- Header -->
-            <div class="p-6 sm:p-8 border-b border-slate-200 dark:border-slate-700">
-                <div class="flex flex-wrap justify-between items-start gap-3">
-                    <div class="flex flex-col gap-1">
-                        <p class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-black leading-tight"
-                            th:text="${servicio.idServicio != null ? 'Editar Servicio' : 'Nuevo Servicio'}">Nuevo
-                            Servicio</p>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-                            Define un servicio que podrás asignar a tus proyectos.</p>
-                    </div>
-                    <a th:href="@{/servicios}"
-                        class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                        <span class="material-symbols-outlined">close</span>
-                    </a>
+        <!-- Header -->
+        <div class="p-6 sm:p-8 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex flex-wrap justify-between items-start gap-3">
+                <div class="flex flex-col gap-1">
+                    <p class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-black leading-tight"
+                       th:text="${servicio.idServicio != null ? 'Editar Servicio' : 'Nuevo Servicio'}">Nuevo
+                        Servicio</p>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
+                        Define un servicio que podrás asignar a tus proyectos.</p>
                 </div>
-            </div>
-
-            <!-- Body -->
-            <div class="p-6 sm:p-8 max-h-[calc(100vh-220px)] overflow-y-auto">
-                <div class="flex flex-col gap-6">
-                    <!-- ID oculto -->
-                    <input type="hidden" th:field="*{idServicio}" />
-
-                    <!-- Tipo de Servicio -->
-                    <label class="flex flex-col w-full">
-                        <p class="text-slate-900 dark:text-slate-300 text-base font-medium pb-2">
-                            Tipo de Servicio <span class="text-red-500">*</span>
-                        </p>
-                        <input th:field="*{tipoServicio}" required
-                            class="form-input rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 h-14 placeholder:text-slate-500 px-4 text-base"
-                            placeholder="Ej. Desarrollo Web, Consultoría IT, Diseño UI/UX" />
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                            Nombre corto y descriptivo del servicio
-                        </p>
-                    </label>
-
-                    <!-- Descripción -->
-                    <label class="flex flex-col w-full">
-                        <p class="text-slate-900 dark:text-slate-300 text-base font-medium pb-2">
-                            Descripción
-                        </p>
-                        <textarea th:field="*{descripcion}" rows="4"
-                            class="form-textarea rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 placeholder:text-slate-500 px-4 py-3 text-base"
-                            placeholder="Describe en qué consiste este servicio y qué incluye..."></textarea>
-                    </label>
-
-                    <!-- Costo Estimado -->
-                    <label class="flex flex-col w-full">
-                        <p class="text-slate-900 dark:text-slate-300 text-base font-medium pb-2">
-                            Costo Base Estimado <span class="text-red-500">*</span>
-                        </p>
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">$</span>
-                            <input th:field="*{costoEstimado}" type="number" step="0.01" min="0" required
-                                class="form-input rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 h-14 placeholder:text-slate-500 pl-8 pr-4 text-base font-semibold"
-                                placeholder="0.00" />
-                        </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                            Costo de referencia. Puede ajustarse por proyecto.
-                        </p>
-                    </label>
-
-                    <!-- Información adicional -->
-                    <div
-                        class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                        <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">info</span>
-                            <div>
-                                <p class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">
-                                    Sobre los servicios
-                                </p>
-                                <p class="text-sm text-blue-700 dark:text-blue-300">
-                                    Los servicios creados aquí estarán disponibles para asignar a cualquier proyecto.
-                                    No están vinculados a un proyecto específico hasta que los selecciones.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div
-                class="flex flex-col sm:flex-row justify-end items-center gap-4 p-6 sm:p-8 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
                 <a th:href="@{/servicios}"
-                    class="w-full sm:w-auto px-6 py-3 rounded-lg text-center font-semibold text-slate-900 dark:text-white bg-transparent hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-                    Cancelar
+                   class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
                 </a>
-                <button type="submit"
-                    class="w-full sm:w-auto px-6 py-3 rounded-lg text-center font-semibold text-white bg-primary hover:bg-primary/90 transition-colors shadow-sm">
-                    <span th:text="${servicio.idServicio != null ? 'Actualizar' : 'Crear Servicio'}">Crear
-                        Servicio</span>
-                </button>
             </div>
-        </form>
-    </div>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6 sm:p-8 max-h-[calc(100vh-220px)] overflow-y-auto">
+            <div class="flex flex-col gap-6">
+                <!-- ID oculto -->
+                <input type="hidden" th:field="*{idServicio}" />
+
+                <!-- Tipo de Servicio -->
+                <label class="flex flex-col w-full">
+                    <p class="text-slate-900 dark:text-slate-300 text-base font-medium pb-2">
+                        Tipo de Servicio <span class="text-red-500">*</span>
+                    </p>
+                    <input th:field="*{tipoServicio}" required
+                           class="form-input rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 h-14 placeholder:text-slate-500 px-4 text-base"
+                           placeholder="Ej. Desarrollo Web, Consultoría IT, Diseño UI/UX" />
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        Nombre corto y descriptivo del servicio
+                    </p>
+                </label>
+
+                <!-- Descripción -->
+                <label class="flex flex-col w-full">
+                    <p class="text-slate-900 dark:text-slate-300 text-base font-medium pb-2">
+                        Descripción
+                    </p>
+                    <textarea th:field="*{descripcion}" rows="4"
+                              class="form-textarea rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 placeholder:text-slate-500 px-4 py-3 text-base"
+                              placeholder="Describe en qué consiste este servicio y qué incluye..."></textarea>
+                </label>
+
+                <!-- ✅ CAMBIADO: costoEstimado → costoBase -->
+                <label class="flex flex-col w-full">
+                    <p class="text-slate-900 dark:text-slate-300 text-base font-medium pb-2">
+                        Costo Base de Referencia <span class="text-red-500">*</span>
+                    </p>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">$</span>
+                        <input th:field="*{costoBase}" type="number" step="0.01" min="0" required
+                               class="form-input rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 h-14 placeholder:text-slate-500 pl-8 pr-4 text-base font-semibold"
+                               placeholder="0.00" />
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        💡 Este es el costo de referencia del catálogo. Podrás ajustarlo al asignar el servicio a un proyecto específico.
+                    </p>
+                </label>
+
+                <!-- Información adicional -->
+                <div
+                        class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                    <div class="flex gap-3">
+                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">info</span>
+                        <div>
+                            <p class="text-sm font-semibold text-blue-900 dark:text-blue-200 mb-1">
+                                Sobre los servicios del catálogo
+                            </p>
+                            <p class="text-sm text-blue-700 dark:text-blue-300">
+                                Los servicios creados aquí son plantillas reutilizables. Podrás asignarlos a múltiples proyectos
+                                con costos personalizados sin afectar el catálogo original.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div
+                class="flex flex-col sm:flex-row justify-end items-center gap-4 p-6 sm:p-8 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700">
+            <a th:href="@{/servicios}"
+               class="w-full sm:w-auto px-6 py-3 rounded-lg text-center font-semibold text-slate-900 dark:text-white bg-transparent hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                Cancelar
+            </a>
+            <button type="submit"
+                    class="w-full sm:w-auto px-6 py-3 rounded-lg text-center font-semibold text-white bg-primary hover:bg-primary/90 transition-colors shadow-sm">
+                    <span th:text="${servicio.idServicio != null ? 'Actualizar Servicio' : 'Crear Servicio'}">Crear
+                        Servicio</span>
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 
 </html>

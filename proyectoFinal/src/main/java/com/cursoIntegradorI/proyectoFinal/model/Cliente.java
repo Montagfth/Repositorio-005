@@ -17,10 +17,16 @@ public class Cliente {
     @Column(name = "idCliente")
     private Integer idCliente;
 
+    @Column(nullable = false, length = 200)
     private String nombre;
+
+    @Column(unique = true, length = 11)  // ✅ AGREGAR unique
     private String ruc;
+
     private String direccion;
     private String telefono;
+
+    @Column(unique = true)  // ✅ AGREGAR unique
     private String correo;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)

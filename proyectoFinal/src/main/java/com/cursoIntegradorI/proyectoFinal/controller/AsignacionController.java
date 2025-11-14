@@ -1,6 +1,7 @@
 package com.cursoIntegradorI.proyectoFinal.controller;
 
 import com.cursoIntegradorI.proyectoFinal.model.Asignacion;
+import com.cursoIntegradorI.proyectoFinal.model.ProyectoServicio;
 import com.cursoIntegradorI.proyectoFinal.service.AsignacionService;
 import com.cursoIntegradorI.proyectoFinal.service.ServicioService;
 import com.cursoIntegradorI.proyectoFinal.service.PersonalService;
@@ -28,7 +29,7 @@ public class AsignacionController {
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("asignacion", new Asignacion());
-        model.addAttribute("servicios", servicioService.listarTodos());
+        model.addAttribute("servicios", servicioService.listarCatalogo());
         model.addAttribute("personal", personalService.listarTodos());
         return "asignaciones/form";
     }
@@ -38,7 +39,7 @@ public class AsignacionController {
         return asignacionService.buscarPorId(id)
                 .map(asignacion -> {
                     model.addAttribute("asignacion", asignacion);
-                    model.addAttribute("servicios", servicioService.listarTodos());
+                    model.addAttribute("servicios", servicioService.listarCatalogo());
                     model.addAttribute("personal", personalService.listarTodos());
                     return "asignaciones/form";
                 })
@@ -49,11 +50,30 @@ public class AsignacionController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute Asignacion asignacion, RedirectAttributes redirectAttributes) {
-        asignacionService.guardar(asignacion);
-        redirectAttributes.addFlashAttribute("success", "Asignación guardada exitosamente");
-        return "redirect:/asignaciones";
+    public String guardar(
+            @ModelAttribute Asignacion asignacion,
+            @RequestParam("idProyecto") Integer idProyecto,
+            @RequestParam("proyectoServicio.idProyectoServicio") Integer idProyectoServicio,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            // 1. Vincular la asignación con el ProyectoServicio correcto
+            ProyectoServicio ps = new ProyectoServicio();
+            ps.setIdProyectoServicio(idProyectoServicio);
+            asignacion.setProyectoServicio(ps);
+
+            // 2. Guardar asignación
+            asignacionService.guardar(asignacion);
+
+            redirectAttributes.addFlashAttribute("success", "Personal asignado correctamente");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al asignar personal");
+        }
+
+        // 3. Volver al detalle del proyecto
+        return "redirect:/proyectos/detalle/" + idProyecto;
     }
+
 
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {

@@ -31,7 +31,7 @@ public class AsignacionService {
 
     @Transactional(readOnly = true)
     public List<Asignacion> buscarPorServicio(Integer idServicio) {
-        return asignacionRepository.findByServicio_IdServicio(idServicio);
+        return asignacionRepository.findByProyectoServicio_IdProyectoServicio(idServicio);
     }
 
     @Transactional

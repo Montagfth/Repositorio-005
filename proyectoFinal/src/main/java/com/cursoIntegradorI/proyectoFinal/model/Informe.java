@@ -16,8 +16,12 @@ public class Informe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idInforme;
 
+    @Column(nullable = false, length = 2000)
     private String descripcion;
+
     private LocalDate fechaEntrega;
+
+    private String tipo;  // ✅ AGREGAR: "Mensual", "Final", "Avance"
 
     @ManyToOne
     @JoinColumn(name = "idProyecto")

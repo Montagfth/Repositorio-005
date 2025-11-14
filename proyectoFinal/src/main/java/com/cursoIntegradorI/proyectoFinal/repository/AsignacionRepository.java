@@ -8,5 +8,7 @@ import java.util.List;
 @Repository
 public interface AsignacionRepository extends JpaRepository<Asignacion, Integer> {
     List<Asignacion> findByPersonal_IdPersonal(Integer idPersonal);
-    List<Asignacion> findByServicio_IdServicio(Integer idServicio);
+
+    // ✅ Cambiar esto:
+    List<Asignacion> findByProyectoServicio_IdProyectoServicio(Integer idProyectoServicio);
 }
