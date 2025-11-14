@@ -9,4 +9,6 @@ import java.util.List;
 public interface ServicioRepository extends JpaRepository<Servicio, Integer> {
     List<Servicio> findByProyecto_IdProyecto(Integer idProyecto);
     List<Servicio> findByTipoServicio(String tipoServicio);
+    List<Servicio> findByProyecto_IdProyectoIsNull();
+
 }

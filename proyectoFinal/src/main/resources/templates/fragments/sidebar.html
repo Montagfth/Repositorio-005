@@ -44,6 +44,13 @@
             <p class="text-sm font-medium">Personal</p>
         </a>
 
+        <a th:href="@{/servicios}"
+           th:classappend="${currentPage == 'servicios' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
+           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
+            <span class="material-symbols-outlined">design_services</span>
+            <p class="text-sm font-medium">Servicios</p>
+        </a>
+
         <a th:href="@{/reportes}"
            th:classappend="${currentPage == 'reportes' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">

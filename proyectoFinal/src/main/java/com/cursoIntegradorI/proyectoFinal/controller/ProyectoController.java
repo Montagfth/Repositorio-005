@@ -83,15 +83,38 @@ public class ProyectoController {
                 .map(proyecto -> {
                     model.addAttribute("currentPage", "proyectos");
                     model.addAttribute("proyecto", proyecto);
-                    // Cargar servicios del proyecto con sus asignaciones
+
+                    // Servicios ya vinculados
                     model.addAttribute("servicios", servicioService.buscarPorProyecto(id));
+
+                    // Servicios disponibles del catálogo
+                    model.addAttribute("serviciosDisponibles", servicioService.listarNoAsignados(id));
+
+                    // Personal disponible
                     model.addAttribute("personalDisponible", personalService.listarTodos());
+
                     return "proyectos/detalle";
                 })
                 .orElseGet(() -> {
                     redirectAttributes.addFlashAttribute("error", "Proyecto no encontrado");
                     return "redirect:/principal";
                 });
+    }
+
+    @PostMapping("/proyectos/{id}/asignar-servicio")
+    public String asignarServicioAProyecto(
+            @PathVariable("id") Integer idProyecto,
+            @RequestParam("idServicio") Integer idServicio,
+            RedirectAttributes redirect
+    ) {
+        try {
+            servicioService.asignarServicioAProyecto(idProyecto, idServicio);
+            redirect.addFlashAttribute("success", "Servicio asignado correctamente.");
+        } catch (Exception e) {
+            redirect.addFlashAttribute("error", "Error al asignar servicio: " + e.getMessage());
+        }
+
+        return "redirect:/proyectos/detalle/" + idProyecto;
     }
 
     /**

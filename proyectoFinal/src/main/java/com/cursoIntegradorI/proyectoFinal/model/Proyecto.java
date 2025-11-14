@@ -2,6 +2,7 @@ package com.cursoIntegradorI.proyectoFinal.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,8 +20,13 @@ public class Proyecto {
 
     private String nombre;
     private String descripcion;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaInicio;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaFin;
+
     private String estado;
 
     @ManyToOne
@@ -36,4 +42,3 @@ public class Proyecto {
     @OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Informe> informes;
 }
-

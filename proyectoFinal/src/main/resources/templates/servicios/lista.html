@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gestión de Servicios - SC LLAMKAY SAC</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1193d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "danger": "#D32F2F"
+                    },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <div class="flex min-h-screen">
+            <!-- Sidebar -->
+            <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-8">
+                <div class="w-full max-w-7xl mx-auto">
+                    <!-- Mensajes flash -->
+                    <div th:if="${success}"
+                        class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 text-green-700 dark:text-green-300 rounded-lg flex items-center gap-3">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span th:text="${success}"></span>
+                    </div>
+                    <div th:if="${error}"
+                        class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-300 rounded-lg flex items-center gap-3">
+                        <span class="material-symbols-outlined">error</span>
+                        <span th:text="${error}"></span>
+                    </div>
+
+                    <!-- Page Heading -->
+                    <div class="flex flex-wrap justify-between gap-3 items-center mb-6">
+                        <h1 class="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight">Catálogo de
+                            Servicios</h1>
+                    </div>
+
+                    <!-- Toolbar -->
+                    <div
+                        class="flex flex-col md:flex-row justify-between gap-4 p-4 rounded-xl bg-white dark:bg-background-dark border border-slate-200 dark:border-slate-800 mb-6">
+                        <div class="flex-1 min-w-[250px]">
+                            <div class="flex w-full flex-1 items-stretch rounded-lg h-12">
+                                <div
+                                    class="text-slate-500 dark:text-slate-400 flex bg-background-light dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg">
+                                    <span class="material-symbols-outlined">search</span>
+                                </div>
+                                <input id="searchInput"
+                                    class="form-input flex w-full min-w-0 flex-1 overflow-hidden rounded-r-lg text-slate-900 dark:text-slate-200 focus:outline-0 focus:ring-2 focus:ring-primary border-none bg-background-light dark:bg-slate-800 h-full placeholder:text-slate-500 px-4 pl-2 text-base"
+                                    placeholder="Buscar por tipo de servicio..." />
+                            </div>
+                        </div>
+                        <a th:href="@{/servicios/nuevo}"
+                            class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 rounded-lg h-12 px-5 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                            <span class="material-symbols-outlined text-base">add</span>
+                            <span>Nuevo Servicio</span>
+                        </a>
+                    </div>
+
+                    <!-- Table -->
+                    <div
+                        class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead
+                                    class="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
+                                    <tr>
+                                        <th
+                                            class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase">
+                                            Tipo de Servicio</th>
+                                        <th
+                                            class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase">
+                                            Descripción</th>
+                                        <th
+                                            class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase">
+                                            Costo Base</th>
+                                        <th
+                                            class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase text-right">
+                                            Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="servicio : ${servicios}"
+                                        class="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                        <td class="p-4 text-slate-800 dark:text-slate-200 font-medium"
+                                            th:text="${servicio.tipoServicio}">Tipo</td>
+                                        <td class="p-4 text-slate-600 dark:text-slate-400"
+                                            th:text="${#strings.abbreviate(servicio.descripcion, 80)}">Descripción</td>
+                                        <td class="p-4 text-slate-800 dark:text-slate-200 font-semibold">
+                                            $<span
+                                                th:text="${#numbers.formatDecimal(servicio.costoEstimado, 1, 2)}">0.00</span>
+                                        </td>
+                                        <td class="p-4">
+                                            <div class="flex justify-end gap-2">
+                                                <a th:href="@{/servicios/editar/{id}(id=${servicio.idServicio})}"
+                                                    class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg hover:text-slate-800 dark:hover:text-slate-100 transition-colors"
+                                                    title="Editar">
+                                                    <span class="material-symbols-outlined">edit</span>
+                                                </a>
+                                                <button
+                                                    onclick="confirmarEliminar([[${servicio.idServicio}]], '[[${servicio.tipoServicio}]]')"
+                                                    class="p-2 text-slate-500 dark:text-slate-400 hover:bg-danger/10 dark:hover:bg-danger/20 rounded-lg hover:text-danger transition-colors"
+                                                    title="Eliminar">
+                                                    <span class="material-symbols-outlined">delete</span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Empty State -->
+                                    <tr th:if="${#lists.isEmpty(servicios)}">
+                                        <td colspan="4">
+                                            <div class="text-center p-16">
+                                                <span
+                                                    class="material-symbols-outlined text-6xl text-slate-300 dark:text-slate-700">miscellaneous_services</span>
+                                                <h3 class="text-xl font-bold text-slate-800 dark:text-slate-200 mt-4">No
+                                                    hay servicios registrados</h3>
+                                                <p class="text-slate-500 dark:text-slate-400 mt-2 mb-6">Crea servicios
+                                                    base que podrás asignar a tus proyectos</p>
+                                                <a th:href="@{/servicios/nuevo}"
+                                                    class="inline-flex items-center justify-center gap-2 rounded-lg h-12 px-5 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                                                    <span class="material-symbols-outlined text-base">add</span>
+                                                    <span>Crear Primer Servicio</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Footer -->
+                        <div th:if="${!#lists.isEmpty(servicios)}"
+                            class="flex justify-between items-center p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/40">
+                            <span class="text-sm text-slate-600 dark:text-slate-400">
+                                Mostrando <span th:text="${#lists.size(servicios)}">0</span> servicio(s)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal de eliminación -->
+    <div id="modalEliminar"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+        <div
+            class="bg-white dark:bg-slate-900 rounded-xl shadow-lg w-[90%] max-w-md p-6 transform scale-95 transition-transform duration-200">
+            <div class="flex items-start gap-4 mb-4">
+                <div
+                    class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl">warning</span>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-1">¿Eliminar servicio?</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        ¿Estás seguro de eliminar el servicio <strong id="nombreServicio"></strong>?
+                        Esto podría afectar proyectos que lo usan.
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+                <button onclick="cerrarModalEliminar()"
+                    class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 transition-colors">
+                    Cancelar
+                </button>
+                <a id="btnConfirmarEliminar" href="#"
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Búsqueda
+        document.getElementById('searchInput').addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr:not(:last-child)');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Modal
+        function confirmarEliminar(id, nombre) {
+            const modal = document.getElementById('modalEliminar');
+            document.getElementById('nombreServicio').textContent = nombre;
+            document.getElementById('btnConfirmarEliminar').href = '/servicios/eliminar/' + id;
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+        }
+
+        function cerrarModalEliminar() {
+            const modal = document.getElementById('modalEliminar');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+        }
+
+        document.getElementById('modalEliminar').addEventListener('click', function (e) {
+            if (e.target === this) cerrarModalEliminar();
+        });
+    </script>
+
+</body>
+
+</html>

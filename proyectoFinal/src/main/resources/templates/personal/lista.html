@@ -80,6 +80,7 @@
                                 <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Nombre</th>
                                 <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Cargo</th>
                                 <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">Correo</th>
+                                <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">teléfono</th>
                                 <th class="p-4 text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-right">Acciones</th>
                             </tr>
                             </thead>
@@ -89,6 +90,7 @@
                                 <td class="p-4 text-slate-800 dark:text-slate-200 font-medium" th:text="${p.nombre}">Nombre</td>
                                 <td class="p-4 text-slate-600 dark:text-slate-400" th:text="${p.cargo}">Cargo</td>
                                 <td class="p-4 text-slate-600 dark:text-slate-400" th:text="${p.correo}">correo@example.com</td>
+                                <td class="p-4 text-slate-600 dark:text-slate-400" th:text="${p.telefono}">999 999 999</td>
                                 <td class="p-4">
                                     <div class="flex justify-end gap-2">
                                         <a th:href="@{/personal/editar/{id}(id=${p.idPersonal})}"

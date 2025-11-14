@@ -73,13 +73,8 @@
                                 placeholder="Buscar proyecto...">
                         </div>
                     </div>
-                    <button 
-                        class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 shadow-sm hover:shadow-md">
-                        <span>Buscar</span>
-                    </button>
-
                     <select
-                        class="px-9 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        class="px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50">
                         <option value="">Todos los estados</option>
                         <option value="Planificado">Planificado</option>
                         <option value="En Curso">En Curso</option>
@@ -154,17 +149,17 @@
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex justify-end gap-2">
-                                            <a th:href="@{/proyectos/editar/{id}(id=${proyecto.idProyecto})}"
+                                            <a th:href="@{/proyectos/detalle/{id}(id=${proyecto.idProyecto})}"
                                                 class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
-                                                title="Editar">
-                                                <span class="material-symbols-outlined text-xl">edit</span>
+                                                title="Ver Detalle">
+                                                <span class="material-symbols-outlined text-xl">visibility</span>
                                             </a>
-                                            <a th:href="@{/proyectos/eliminar/{id}(id=${proyecto.idProyecto})}"
-                                                onclick="return confirm('¿Estás seguro de eliminar este proyecto?')"
+                                            <button
+                                                onclick="confirmarEliminar([[${proyecto.idProyecto}]], '[[${proyecto.nombre}]]')"
                                                 class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
                                                 title="Eliminar">
                                                 <span class="material-symbols-outlined text-xl">delete</span>
-                                            </a>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

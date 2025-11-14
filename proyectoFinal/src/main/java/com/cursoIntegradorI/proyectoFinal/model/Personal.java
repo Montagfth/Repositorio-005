@@ -19,6 +19,7 @@ public class Personal {
     private String nombre;
     private String cargo;
     private String correo;
+    private String telefono;
 
     @OneToMany(mappedBy = "personal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Asignacion> asignaciones;
