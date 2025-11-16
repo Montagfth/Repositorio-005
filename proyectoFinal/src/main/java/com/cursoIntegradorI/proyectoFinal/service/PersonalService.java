@@ -34,8 +34,20 @@ public class PersonalService {
         return personalRepository.findByCargo(cargo);
     }
 
+    @Transactional(readOnly = true)
+    public List<Personal> buscarPorTelefono(String telefono) {
+        return personalRepository.findByCargo(telefono);
+    }
+
     @Transactional
     public Personal guardar(Personal personal) {
+        // Validación de correo duplicado
+        personalRepository.findByCorreo(personal.getCorreo())
+                .ifPresent(p -> {
+                    if (!p.getIdPersonal().equals(personal.getIdPersonal())) {
+                        throw new IllegalArgumentException("El correo ya está registrado");
+                    }
+                });
         return personalRepository.save(personal);
     }
 

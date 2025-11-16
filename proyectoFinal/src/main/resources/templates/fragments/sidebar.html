@@ -61,20 +61,10 @@
 
     <!-- Botones inferiores agrupados -->
     <div class="flex flex-col gap-2 mt-auto">
-        <a th:href="@{/proyectos/nuevo}"
-           class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-green text-white text-sm font-bold hover:bg-accent-green/90 transition-transform duration-200 hover:-translate-y-1">
-            <span class="material-symbols-outlined">add</span>
-            <span>Crear Proyecto</span>
+        <a th:href="@{/logout}"
+           class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-red text-white text-sm font-bold hover:bg-accent-red/90 transition-transform duration-200 hover:-translate-y-1">
+            <span class="material-symbols-outlined">account_circle_off</span>
+            <span>Log Out</span>
         </a>
-        <button onclick="alert('Selecciona un proyecto primero')"
-                class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-orange text-white text-sm font-bold hover:bg-accent-orange/90 transition-transform duration-200 hover:-translate-y-1">
-            <span class="material-symbols-outlined">edit</span>
-            <span>Editar Proyecto</span>
-        </button>
-        <button onclick="alert('Selecciona un proyecto primero')"
-                class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-red text-white text-sm font-bold hover:bg-accent-red/90 transition-transform duration-200 hover:-translate-y-1">
-            <span class="material-symbols-outlined">delete</span>
-            <span>Eliminar Proyecto</span>
-        </button>
     </div>
 </div>

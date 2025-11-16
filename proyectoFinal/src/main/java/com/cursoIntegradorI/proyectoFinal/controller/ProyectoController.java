@@ -77,7 +77,7 @@ public class ProyectoController {
     }
 
     /**
-     * ✅ ACTUALIZADO: Muestra el detalle completo de un proyecto con sus servicios y asignaciones
+     * Muestra el detalle completo de un proyecto con sus servicios y asignaciones
      */
     @GetMapping("/detalle/{id}")
     public String verDetalle(@PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
@@ -85,14 +85,8 @@ public class ProyectoController {
                 .map(proyecto -> {
                     model.addAttribute("currentPage", "proyectos");
                     model.addAttribute("proyecto", proyecto);
-
-                    // ✅ NUEVO: ProyectoServicios (servicios ya asignados a este proyecto)
                     model.addAttribute("serviciosProyecto", proyectoServicioService.listarPorProyecto(id));
-
-                    // ✅ NUEVO: Catálogo completo de servicios disponibles
                     model.addAttribute("catalogoServicios", servicioService.listarCatalogo());
-
-                    // Personal disponible para asignar
                     model.addAttribute("personalDisponible", personalService.listarTodos());
 
                     return "proyectos/detalle";
@@ -104,7 +98,7 @@ public class ProyectoController {
     }
 
     /**
-     * ✅ ACTUALIZADO: Asigna un servicio del catálogo a este proyecto
+     * Asigna un servicio del catálogo a este proyecto
      * Crea una entrada en la tabla intermedia ProyectoServicio
      */
     @PostMapping("/{id}/asignar-servicio")
@@ -126,7 +120,7 @@ public class ProyectoController {
     }
 
     /**
-     * ✅ NUEVO: Desvincula un servicio del proyecto
+     * Desvincula un servicio del proyecto
      * Elimina la relación ProyectoServicio (y sus asignaciones en cascada)
      */
     @GetMapping("/{idProyecto}/desvincular-servicio/{idProyectoServicio}")
@@ -146,7 +140,7 @@ public class ProyectoController {
     }
 
     /**
-     * ✅ NUEVO: Actualiza datos específicos de un servicio en el proyecto
+     * Actualiza datos específicos de un servicio en el proyecto
      * (costo acordado, observaciones, estado)
      */
     @PostMapping("/{idProyecto}/actualizar-servicio/{idProyectoServicio}")

@@ -33,7 +33,7 @@ public class SecurityConfig {
                 // 🚪 Configuración del logout
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/login")
                         .permitAll()
                 )
                 // ⚙️ Configuración moderna de autenticación
