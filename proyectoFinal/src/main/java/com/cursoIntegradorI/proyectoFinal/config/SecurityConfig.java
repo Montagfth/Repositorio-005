@@ -21,7 +21,7 @@ public class SecurityConfig {
         http
                 // 🔒 Configuración de autorización
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/login").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/login", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 // 🧩 Configuración del login personalizado

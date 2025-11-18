@@ -117,7 +117,9 @@
                                            title="Editar">
                                             <span class="material-symbols-outlined">edit</span>
                                         </a>
-                                        <button onclick="confirmarEliminar([[${cliente.idCliente}]], '[[${cliente.nombre}]]')"
+                                        <button th:data-id="${cliente.idCliente}"
+                                                th:data-nombre="${cliente.nombre}"
+                                                onclick="confirmarEliminar(this.dataset.id, this.dataset.nombre)"
                                                 class="p-2 text-slate-500 dark:text-slate-400 hover:bg-danger/10 dark:hover:bg-danger/20 rounded-lg hover:text-danger transition-colors"
                                                 title="Eliminar">
                                             <span class="material-symbols-outlined">delete</span>
@@ -186,10 +188,13 @@
                     class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
                 Cancelar
             </button>
-            <a id="btnConfirmarEliminar" href="#"
-               class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                Eliminar
-            </a>
+            <!-- ✅ FORMULARIO para envío POST -->
+            <form id="formEliminar" method="post" class="inline">
+                <button type="submit"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    Eliminar
+                </button>
+            </form>
         </div>
     </div>
 </div>
@@ -206,56 +211,46 @@
         });
     });
 
-    // Seleccionar todos los checkboxes
-    document.getElementById('selectAll').addEventListener('change', function() {
-        const checkboxes = document.querySelectorAll('.cliente-checkbox');
-        checkboxes.forEach(cb => cb.checked = this.checked);
-        actualizarBotonesSeleccion();
-    });
+    // ✅ Función mejorada con verificación AJAX
+    async function confirmarEliminar(id, nombre) {
+        try {
+            // Verificar si el cliente puede ser eliminado
+            const response = await fetch(`/clientes/verificar-eliminacion/${id}`);
+            const data = await response.json();
 
-    // Actualizar botones de editar/eliminar según selección
-    document.querySelectorAll('.cliente-checkbox').forEach(cb => {
-        cb.addEventListener('change', actualizarBotonesSeleccion);
-    });
+            const modal = document.getElementById('modalEliminar');
+            const nombreCliente = document.getElementById('nombreCliente');
+            const descripcionModal = modal.querySelector('.text-sm.text-slate-500');
+            const formEliminar = document.getElementById('formEliminar');
+            const btnEliminar = formEliminar.querySelector('button[type="submit"]');
 
-    function actualizarBotonesSeleccion() {
-        const checkboxes = document.querySelectorAll('.cliente-checkbox:checked');
-        const btnEditar = document.getElementById('btnEditarSeleccionado');
-        const btnEliminar = document.getElementById('btnEliminarSeleccionado');
+            nombreCliente.textContent = nombre;
+            formEliminar.action = '/clientes/eliminar/' + id;
 
-        if (checkboxes.length === 1) {
-            btnEditar.disabled = false;
-            btnEliminar.disabled = false;
-            const id = checkboxes[0].dataset.id;
-            btnEditar.onclick = () => window.location.href = `/clientes/editar/${id}`;
-            btnEliminar.onclick = () => {
-                const row = checkboxes[0].closest('tr');
-                const nombre = row.querySelector('td:nth-child(2)').textContent;
-                confirmarEliminar(id, nombre);
-            };
-        } else if (checkboxes.length > 1) {
-            btnEditar.disabled = true;
-            btnEliminar.disabled = false;
-            btnEliminar.onclick = () => alert('Eliminación múltiple no implementada');
-        } else {
-            btnEditar.disabled = true;
-            btnEliminar.disabled = true;
+            // Actualizar mensaje y estado del botón según si tiene proyectos
+            if (data.puedeEliminar) {
+                descripcionModal.innerHTML =
+                    `¿Estás seguro de que deseas eliminar al cliente <strong>${nombre}</strong>? Esta acción no se puede deshacer.`;
+                btnEliminar.disabled = false;
+                btnEliminar.classList.remove('opacity-50', 'cursor-not-allowed');
+            } else {
+                descripcionModal.innerHTML =
+                    `<span class="text-yellow-600 dark:text-yellow-400">⚠️ No se puede eliminar al cliente <strong>${nombre}</strong> porque tiene <strong>${data.proyectosAsociados} proyecto(s)</strong> asociado(s).</span><br><br>` +
+                    `<span class="text-xs">Primero debes eliminar o reasignar los proyectos de este cliente.</span>`;
+                btnEliminar.disabled = true;
+                btnEliminar.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+
+            // Mostrar modal
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+
+        } catch (error) {
+            console.error('Error al verificar eliminación:', error);
+            alert('Error al verificar si el cliente puede ser eliminado');
         }
-    }
-
-    // Modal de eliminación
-    function confirmarEliminar(id, nombre) {
-        const modal = document.getElementById('modalEliminar');
-        const nombreCliente = document.getElementById('nombreCliente');
-        const btnConfirmar = document.getElementById('btnConfirmarEliminar');
-
-        nombreCliente.textContent = nombre;
-        btnConfirmar.href = '/clientes/eliminar/' + id;
-
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modal.classList.add('opacity-100');
-        modal.querySelector('div').classList.remove('scale-95');
-        modal.querySelector('div').classList.add('scale-100');
     }
 
     function cerrarModalEliminar() {

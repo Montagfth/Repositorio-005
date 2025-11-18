@@ -10,4 +10,7 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Integer> {
     List<Proyecto> findByCliente_IdCliente(Integer idCliente);
     List<Proyecto> findByEstado(String estado);
     List<Proyecto> findByNombreContainingIgnoreCase(String nombre);
+
+    // ✅ AGREGAR ESTE MÉTODO
+    long countByCliente_IdCliente(Integer idCliente);
 }

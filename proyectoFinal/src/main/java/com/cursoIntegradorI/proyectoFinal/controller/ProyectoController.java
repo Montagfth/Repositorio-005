@@ -1,16 +1,21 @@
 package com.cursoIntegradorI.proyectoFinal.controller;
 
 import com.cursoIntegradorI.proyectoFinal.model.Proyecto;
+import com.cursoIntegradorI.proyectoFinal.model.ProyectoServicio;
 import com.cursoIntegradorI.proyectoFinal.service.PersonalService;
 import com.cursoIntegradorI.proyectoFinal.service.ProyectoService;
 import com.cursoIntegradorI.proyectoFinal.service.ClienteService;
 import com.cursoIntegradorI.proyectoFinal.service.ServicioService;
 import com.cursoIntegradorI.proyectoFinal.service.ProyectoServicioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/proyectos")
@@ -117,6 +122,35 @@ public class ProyectoController {
         }
 
         return "redirect:/proyectos/detalle/" + idProyecto;
+    }
+    /**
+     * Obtiene los datos de un ProyectoServicio para editar
+     */
+    @GetMapping("/{idProyecto}/servicio/{idProyectoServicio}/datos")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerDatosServicio(
+            @PathVariable Integer idProyecto,
+            @PathVariable Integer idProyectoServicio
+    ) {
+        try {
+            ProyectoServicio ps = proyectoServicioService.buscarPorId(idProyectoServicio)
+                    .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
+
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("idProyectoServicio", ps.getIdProyectoServicio());
+            datos.put("tipoServicio", ps.getServicio().getTipoServicio());
+            datos.put("descripcion", ps.getServicio().getDescripcion());
+            datos.put("costoBase", ps.getServicio().getCostoBase());
+            datos.put("costoAcordado", ps.getCostoAcordado());
+            datos.put("observaciones", ps.getObservaciones());
+            datos.put("estado", ps.getEstado());
+            datos.put("fechaAsignacion", ps.getFechaAsignacion() != null ?
+                    ps.getFechaAsignacion().toString() : null);
+
+            return ResponseEntity.ok(datos);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     /**

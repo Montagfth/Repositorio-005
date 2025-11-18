@@ -152,7 +152,7 @@
                                         th:text="'Observaciones: ' + ${ps.observaciones}"></p>
                                 </div>
                                 <button
-                                    th:onclick="'abrirModalEditarServicio(' + ${ps.idProyectoServicio} + ')'"
+                                    th:onclick="'abrirModalEditarServicio(' + ${ps.idProyectoServicio} + ', ' + ${proyecto.idProyecto} + ')'"
                                     class="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
                                     <span class="material-symbols-outlined text-xl">visibility</span>
                                 </button>
@@ -286,55 +286,107 @@
     <div id="modalEditarServicio"
         class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
         <div
-            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-md p-6 transform scale-95 transition-transform duration-200">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Asignar Servicio al Proyecto</h3>
-            <form th:action="@{/proyectos/{id}/asignar-servicio(id=${proyecto.idProyecto})}" method="get">
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-2xl p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Editar Servicio del Proyecto</h3>
+
+            <form id="formEditarServicio" method="post">
+                <input type="hidden" id="edit_idProyectoServicio" name="idProyectoServicio" />
+                <input type="hidden" id="edit_idProyecto" name="idProyecto" />
+
                 <div class="space-y-4">
+                    <!-- Información del Servicio (solo lectura) -->
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-2">Servicio del
+                            Catálogo</p>
+                        <div class="grid grid-cols-1 gap-2">
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Tipo de Servicio</p>
+                                <p id="edit_tipoServicio" class="font-semibold text-gray-900 dark:text-white">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Descripción</p>
+                                <p id="edit_descripcion" class="text-sm text-gray-700 dark:text-gray-300">-</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Costo Base del Catálogo</p>
+                                <p id="edit_costoBase" class="text-lg font-bold text-gray-900 dark:text-white">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Costo Acordado (editable) -->
                     <label class="flex flex-col">
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Servicio del Catálogo
-                            *</span>
-                        <select name="idServicio" required
-                            class="form-select rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                            <option value="">Seleccione un servicio</option>
-                            <option th:each="servicio : ${catalogoServicios}" th:value="${servicio.idServicio}"
-                                th:text="${servicio.tipoServicio + ' - $' + #numbers.formatDecimal(servicio.costoBase, 1, 2)}">
-                                Servicio
-                            </option>
-                        </select>
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Costo Acordado en el Proyecto <span class="text-red-500">*</span>
+                        </span>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">$</span>
+                            <input id="edit_costoAcordado" name="costoAcordado" type="number" step="0.01" min="0"
+                                required
+                                class="form-input pl-8 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-full"
+                                placeholder="0.00">
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            Este es el costo específico acordado para este proyecto
+                        </span>
                     </label>
 
+                    <!-- Estado (editable) -->
                     <label class="flex flex-col">
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Costo Acordado
-                            (opcional)</span>
-                        <input name="costoAcordado" type="number" step="0.01" min="0"
-                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                            placeholder="Dejar vacío para usar el costo base">
-                        <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Si no especificas, se usará el costo
-                            base del catálogo</span>
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Estado del Servicio <span class="text-red-500">*</span>
+                        </span>
+                        <div class="relative">
+                            <select id="edit_estado" name="estado" required
+                                class="form-select appearance-none rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-full pr-10">
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Completado">Completado</option>
+                            </select>
+                            <span
+                                class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">expand_more</span>
+                        </div>
                     </label>
 
+                    <!-- Observaciones (editable) -->
                     <label class="flex flex-col">
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Observaciones
-                            (opcional)</span>
-                        <textarea name="observaciones" rows="3"
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Observaciones Específicas del Proyecto
+                        </span>
+                        <textarea id="edit_observaciones" name="observaciones" rows="4"
                             class="form-textarea rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                            placeholder="Notas específicas para este servicio en el proyecto"></textarea>
+                            placeholder="Notas o detalles específicos para este servicio en el proyecto..."></textarea>
                     </label>
 
-                    <p class="text-xs text-gray-500 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
-                        💡 Se creará una instancia del servicio específica para este proyecto. El servicio del catálogo
-                        permanecerá disponible.
-                    </p>
+                    <!-- Fecha de Asignación (solo lectura) -->
+                    <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                        <span class="material-symbols-outlined text-base">schedule</span>
+                        <span>Fecha de asignación: <strong id="edit_fechaAsignacion">-</strong></span>
+                    </div>
+
+                    <!-- Información adicional -->
+                    <div
+                        class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                        <div class="flex gap-2">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">info</span>
+                            <p class="text-xs text-blue-700 dark:text-blue-300">
+                                Los cambios solo afectarán a este servicio en este proyecto específico.
+                                El servicio del catálogo permanecerá sin cambios.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- Botones -->
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="cerrarModalEditarServicio()"
-                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300">
+                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 transition-colors">
                         Cancelar
                     </button>
                     <button type="submit"
-                        class="px-4 py-2 bg-accent-green text-white rounded-lg hover:bg-accent-green/90">
-                        Asignar Servicio
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">save</span>
+                        <span>Guardar Cambios</span>
                     </button>
                 </div>
             </form>
@@ -428,21 +480,6 @@
             modal.querySelector('div').classList.add('scale-95');
         }
 
-
-        function abrirModalEditarServicio() {
-            const modal = document.getElementById('modalEditarServicio');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.querySelector('div').classList.remove('scale-95');
-            modal.querySelector('div').classList.add('scale-100');
-        }
-
-        function cerrarModalEditarServicio() {
-            const modal = document.getElementById('modalEditarServicio');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.querySelector('div').classList.remove('scale-100');
-            modal.querySelector('div').classList.add('scale-95');
-        }
-
         function abrirModalAsignacion(idProyectoServicio) {
             document.getElementById('idProyectoServicioAsignacion').value = idProyectoServicio;
             const modal = document.getElementById('modalAsignacion');
@@ -477,6 +514,99 @@
 
         document.getElementById('modalAsignacion').addEventListener('click', function (e) {
             if (e.target === this) cerrarModalAsignacion();
+        });
+
+
+    /**
+     * Abre el modal y carga los datos del servicio
+     */
+        async function abrirModalEditarServicio(idProyectoServicio, idProyecto) {
+            try {
+                // Obtener datos del servicio
+                const response = await fetch(`/proyectos/${idProyecto}/servicio/${idProyectoServicio}/datos`);
+
+                if (!response.ok) {
+                    throw new Error('Error al cargar los datos del servicio');
+                }
+
+                const datos = await response.json();
+
+                // Rellenar campos del formulario
+                document.getElementById('edit_idProyectoServicio').value = datos.idProyectoServicio;
+                document.getElementById('edit_idProyecto').value = idProyecto;
+
+                // Información del catálogo (solo lectura)
+                document.getElementById('edit_tipoServicio').textContent = datos.tipoServicio || '-';
+                document.getElementById('edit_descripcion').textContent = datos.descripcion || '-';
+                document.getElementById('edit_costoBase').textContent =
+                    '$' + (datos.costoBase ? parseFloat(datos.costoBase).toFixed(2) : '0.00');
+
+                // Campos editables
+                document.getElementById('edit_costoAcordado').value = datos.costoAcordado || datos.costoBase || '';
+                document.getElementById('edit_estado').value = datos.estado || 'Pendiente';
+                document.getElementById('edit_observaciones').value = datos.observaciones || '';
+
+                // Fecha de asignación
+                if (datos.fechaAsignacion) {
+                    const fecha = new Date(datos.fechaAsignacion);
+                    document.getElementById('edit_fechaAsignacion').textContent =
+                        fecha.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                } else {
+                    document.getElementById('edit_fechaAsignacion').textContent = 'No especificada';
+                }
+
+                // Configurar action del formulario
+                const form = document.getElementById('formEditarServicio');
+                form.action = `/proyectos/${idProyecto}/actualizar-servicio/${idProyectoServicio}`;
+
+                // Mostrar modal con animación
+                const modal = document.getElementById('modalEditarServicio');
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al cargar los datos del servicio. Por favor, intente nuevamente.');
+            }
+        }
+
+
+        /**
+         * Cierra el modal de editar servicio
+         */
+        function cerrarModalEditarServicio() {
+            const modal = document.getElementById('modalEditarServicio');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+
+            // Limpiar formulario
+            document.getElementById('formEditarServicio').reset();
+        }
+
+        /**
+         * Cerrar modal al hacer clic fuera
+         */
+        document.getElementById('modalEditarServicio').addEventListener('click', function (e) {
+            if (e.target === this) {
+                cerrarModalEditarServicio();
+            }
+        });
+
+        /**
+         * Validación del formulario antes de enviar
+         */
+        document.getElementById('formEditarServicio').addEventListener('submit', function (e) {
+            const costoAcordado = parseFloat(document.getElementById('edit_costoAcordado').value);
+
+            if (isNaN(costoAcordado) || costoAcordado < 0) {
+                e.preventDefault();
+                alert('Por favor, ingrese un costo válido.');
+                return false;
+            }
+
+            return true;
         });
     </script>
 

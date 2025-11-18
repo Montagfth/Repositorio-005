@@ -35,6 +35,11 @@
 
         <!-- Header -->
         <div class="p-6 sm:p-8 border-b border-slate-200 dark:border-slate-700">
+            <!-- ERRORES -->
+            <div th:if="${error}"
+                class="bg-red-100 text-red-800 px-4 py-3 rounded-lg mb-4 border border-red-300">
+                <p th:text="${error}"></p>
+            </div>
             <div class="flex flex-wrap justify-between items-start gap-3">
                 <div class="flex flex-col gap-1">
                     <p class="text-slate-900 dark:text-white text-2xl sm:text-3xl font-black leading-tight tracking-[-0.03em]"
@@ -46,11 +51,6 @@
                    class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                     <span class="material-symbols-outlined">close</span>
                 </a>
-                <!-- ERRORES -->
-                <div th:if="${error}"
-                     class="bg-red-100 text-red-800 px-4 py-3 rounded-lg mb-4 border border-red-300">
-                    <p th:text="${error}"></p>
-                </div>
             </div>
         </div>
 

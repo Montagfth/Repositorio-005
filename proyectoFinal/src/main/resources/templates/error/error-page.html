@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${errorCode + ' - ' + errorTitle}">Error - SC LLAMKAY SAC</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#1193d4",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: { display: ["Manrope", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+
+    <!-- Fondo decorativo -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-200/20 dark:bg-blue-900/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/20 dark:bg-purple-900/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="relative max-w-4xl w-full">
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 md:p-12 border border-gray-200 dark:border-gray-700">
+
+            <!-- Código de error animado -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-32 h-32 mb-6 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 float-animation">
+                        <span class="material-symbols-outlined text-6xl text-blue-600 dark:text-blue-400"
+                              th:text="${errorIcon}">error</span>
+                </div>
+
+                <div class="mb-4">
+                        <span class="inline-block text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
+                              th:text="${errorCode}">500</span>
+                </div>
+
+                <h1 class="text-3xl md:text-4xl font-black text-gray-900 dark:text-white mb-3"
+                    th:text="${errorTitle}">Error del Servidor</h1>
+
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+                   th:text="${errorMessage}">Ha ocurrido un error inesperado.</p>
+            </div>
+
+            <!-- Línea decorativa -->
+            <div class="flex items-center justify-center my-8">
+                <div class="h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent w-full max-w-md"></div>
+            </div>
+
+            <!-- Sugerencias y acciones -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Columna izquierda: Sugerencias -->
+                <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 mt-1">lightbulb</span>
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">¿Qué puedes hacer?</h3>
+                            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                                    <span>Verifica que la URL sea correcta</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                                    <span>Intenta recargar la página</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                                    <span>Regresa a la página principal</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-600 dark:text-blue-400 mt-0.5">•</span>
+                                    <span>Contacta al soporte si el problema persiste</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna derecha: Información técnica -->
+                <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 mt-1">info</span>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">Detalles técnicos</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500 dark:text-gray-400">Código de error:</span>
+                                    <span class="font-mono font-semibold text-gray-900 dark:text-white"
+                                          th:text="${errorCode}">500</span>
+                                </div>
+                                <div class="flex justify-between items-start gap-2" th:if="${errorUri}">
+                                    <span class="text-gray-500 dark:text-gray-400 flex-shrink-0">Ruta:</span>
+                                    <span class="font-mono text-xs text-gray-900 dark:text-white text-right break-all"
+                                          th:text="${errorUri}">-</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500 dark:text-gray-400">Timestamp:</span>
+                                    <span class="font-mono text-xs text-gray-900 dark:text-white"
+                                          th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy HH:mm:ss')}">
+                                            16/11/2024 12:00:00
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="window.history.back()"
+                        class="w-full sm:w-auto px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 font-semibold flex items-center justify-center gap-2 group">
+                    <span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                    <span>Volver Atrás</span>
+                </button>
+
+                <a href="/principal"
+                   class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg transition-all duration-200 font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-105">
+                    <span class="material-symbols-outlined">home</span>
+                    <span>Ir al Inicio</span>
+                </a>
+
+                <button onclick="location.reload()"
+                        class="w-full sm:w-auto px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 font-semibold flex items-center justify-center gap-2 group">
+                    <span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">refresh</span>
+                    <span>Recargar</span>
+                </button>
+            </div>
+
+            <!-- Footer con marca -->
+            <div class="mt-12 text-center">
+                <div class="inline-flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm">
+                    <span class="material-symbols-outlined text-base">business</span>
+                    <span>SC LLAMKAY SAC</span>
+                    <span>•</span>
+                    <span>Sistema de Gestión de Proyectos</span>
+                </div>
+            </div>
+
+            <!-- Detalles técnicos adicionales (solo en desarrollo) -->
+            <div th:if="${showDetails}" class="mt-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <details>
+                    <summary class="cursor-pointer font-semibold text-red-900 dark:text-red-300 mb-2">
+                        🔧 Información de desarrollo (no visible en producción)
+                    </summary>
+                    <div class="text-xs font-mono text-red-800 dark:text-red-400 space-y-1 mt-2">
+                        <p><strong>URI:</strong> <span th:text="${errorUri}">-</span></p>
+                        <p><strong>Código:</strong> <span th:text="${errorCode}">-</span></p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para efectos adicionales -->
+<script>
+    // Efecto de partículas decorativas (opcional)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Agregar clase de animación al cargar
+        const errorIcon = document.querySelector('.float-animation');
+        if (errorIcon) {
+            errorIcon.style.opacity = '0';
+            setTimeout(() => {
+                errorIcon.style.transition = 'opacity 0.5s ease-in';
+                errorIcon.style.opacity = '1';
+            }, 100);
+        }
+
+        // Efecto de console para desarrolladores
+        console.log('%c🚨 Error ' + document.title, 'color: #ef4444; font-size: 16px; font-weight: bold;');
+        console.log('%c💡 Si eres desarrollador, revisa los logs del servidor', 'color: #3b82f6; font-size: 12px;');
+    });
+</script>
+</body>
+</html>

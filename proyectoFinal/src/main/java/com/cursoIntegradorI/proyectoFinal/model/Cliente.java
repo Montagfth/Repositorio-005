@@ -20,16 +20,18 @@ public class Cliente {
     @Column(nullable = false, length = 200)
     private String nombre;
 
-    @Column(unique = true, length = 11)  // ✅ AGREGAR unique
+    @Column(unique = true, length = 11)
     private String ruc;
 
     private String direccion;
     private String telefono;
 
-    @Column(unique = true)  // ✅ AGREGAR unique
+    @Column(unique = true)
     private String correo;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    // ✅ CAMBIAR ESTA LÍNEA - Eliminar cascade y orphanRemoval
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @ToString.Exclude  // ✅ AGREGAR para evitar loops infinitos en logs
+    @EqualsAndHashCode.Exclude  // ✅ AGREGAR para evitar problemas con equals/hashCode
     private List<Proyecto> proyectos;
 }
-
