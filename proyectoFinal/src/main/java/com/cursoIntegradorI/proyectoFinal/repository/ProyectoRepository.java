@@ -11,6 +11,5 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Integer> {
     List<Proyecto> findByEstado(String estado);
     List<Proyecto> findByNombreContainingIgnoreCase(String nombre);
 
-    // ✅ AGREGAR ESTE MÉTODO
     long countByCliente_IdCliente(Integer idCliente);
 }

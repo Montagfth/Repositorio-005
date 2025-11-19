@@ -19,7 +19,7 @@ public class Asignacion {
 
     @ManyToOne
     @JoinColumn(name = "idProyectoServicio", nullable = false)
-    private ProyectoServicio proyectoServicio;  // ✅ Asigna personal a un servicio dentro de un proyecto
+    private ProyectoServicio proyectoServicio;  // Asigna personal a un servicio dentro de un proyecto
 
     @ManyToOne
     @JoinColumn(name = "idPersonal", nullable = false)
@@ -32,5 +32,5 @@ public class Asignacion {
 
     private Double horasTrabajadas;
 
-    private Double tarifaPorHora;      // ✅ AGREGAR: tarifa específica de esta persona en este proyecto
+    private Double tarifaPorHora;      // AGREGAR: tarifa específica de esta persona en este proyecto
 }

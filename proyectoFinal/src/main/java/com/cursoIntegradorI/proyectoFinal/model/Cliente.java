@@ -29,9 +29,8 @@ public class Cliente {
     @Column(unique = true)
     private String correo;
 
-    // ✅ CAMBIAR ESTA LÍNEA - Eliminar cascade y orphanRemoval
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    @ToString.Exclude  // ✅ AGREGAR para evitar loops infinitos en logs
-    @EqualsAndHashCode.Exclude  // ✅ AGREGAR para evitar problemas con equals/hashCode
+    @ToString.Exclude  // AGREGAR para evitar loops infinitos en logs
+    @EqualsAndHashCode.Exclude  // AGREGAR para evitar problemas con equals/hashCode
     private List<Proyecto> proyectos;
 }

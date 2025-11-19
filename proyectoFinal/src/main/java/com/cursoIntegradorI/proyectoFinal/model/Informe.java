@@ -21,7 +21,7 @@ public class Informe {
 
     private LocalDate fechaEntrega;
 
-    private String tipo;  // ✅ AGREGAR: "Mensual", "Final", "Avance"
+    private String tipo;  // AGREGAR: "Mensual", "Final", "Avance"
 
     @ManyToOne
     @JoinColumn(name = "idProyecto")

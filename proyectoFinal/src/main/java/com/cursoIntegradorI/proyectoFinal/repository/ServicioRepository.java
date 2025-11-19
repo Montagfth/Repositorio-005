@@ -8,5 +8,4 @@ import java.util.List;
 @Repository
 public interface ServicioRepository extends JpaRepository<Servicio, Integer> {
     List<Servicio> findByTipoServicio(String tipoServicio);
-    // ✅ Eliminar métodos relacionados con proyectos
 }
