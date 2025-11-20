@@ -37,9 +37,9 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 // ⚙️ Configuración moderna de autenticación
-                .userDetailsService(customUserDetailsService)
+                .userDetailsService(customUserDetailsService);
                 // 🔐 Desactiva CSRF si no usas formularios con token
-                .csrf(AbstractHttpConfigurer::disable);
+
 
         return http.build();
     }
