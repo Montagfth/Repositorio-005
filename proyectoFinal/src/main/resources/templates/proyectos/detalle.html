@@ -54,8 +54,10 @@
                                 <h1 class="text-3xl font-black text-gray-900 dark:text-white"
                                     th:text="${proyecto.nombre}">Nombre del Proyecto</h1>
                                 <span th:class="${proyecto.estado == 'Completado' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
-                                             proyecto.estado == 'En Curso' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' :
-                                             'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'}"
+                                                proyecto.estado == 'En Curso' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' :
+                                                proyecto.estado == 'Pausado' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
+                                                proyecto.estado == 'Retrasado' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 font-bold' :
+                                                'bg-sky-100 dark:bg-sky-900/30 text-sky-800 dark:text-sky-300'}"
                                     class="px-3 py-1 rounded-full text-sm font-medium">
                                     <span th:text="${proyecto.estado}">Estado</span>
                                 </span>
@@ -517,9 +519,9 @@
         });
 
 
-    /**
-     * Abre el modal y carga los datos del servicio
-     */
+        /**
+         * Abre el modal y carga los datos del servicio
+         */
         async function abrirModalEditarServicio(idProyectoServicio, idProyecto) {
             try {
                 // Obtener datos del servicio

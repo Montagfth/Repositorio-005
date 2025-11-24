@@ -5,6 +5,8 @@ import com.cursoIntegradorI.proyectoFinal.repository.ProyectoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +49,10 @@ public class ProyectoService {
     @Transactional
     public void eliminar(Integer id) {
         proyectoRepository.deleteById(id);
+    }
+
+    public void verificarYActualizarRetrasos() {
+        // Le pasamos la fecha de hoy
+        proyectoRepository.actualizarProyectosVencidos(LocalDate.now());
     }
 }

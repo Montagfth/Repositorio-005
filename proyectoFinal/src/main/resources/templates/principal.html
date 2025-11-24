@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario de Proyectos - SC LLAMKAY SAC</title>
 
-    <!-- Tailwind y Material Icons -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
@@ -18,9 +17,9 @@
                         primary: "#1A237E",
                         "background-light": "#f6f7f8",
                         "background-dark": "#101c22",
-                        "accent-orange": "#FF9800",
                         "accent-green": "#4CAF50",
-                        "accent-red": "#F44336"
+                        "accent-red": "#F44336",
+                        "accent-orange": "#FF9800"
                     },
                     fontFamily: { display: ["Manrope", "sans-serif"] },
                 },
@@ -32,91 +31,161 @@
 <body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
 <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
 
-    <div class="layout-container flex h-full grow flex-row">
+    <div class="layout-container flex h-full grow flex-col lg:flex-row">
         <!-- Sidebar importado -->
         <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
 
         <!-- Contenido principal -->
-        <main class="flex-1 p-6 lg:p-8">
-            <!-- Mensajes flash -->
-            <div th:if="${success}" class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 rounded-lg">
-                <span th:text="${success}"></span>
-            </div>
-            <div th:if="${error}" class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 rounded-lg">
-                <span th:text="${error}"></span>
+        <main class="flex-1 p-4 lg:p-8">
+            <!-- SECCIÓN DE ALERTAS -->
+            <div class="mb-6 space-y-3">
+                <!-- Alerta: Proyectos Retrasados -->
+                <div th:if="${proyectosRetrasados > 0}"
+                     class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600 p-4 rounded-lg">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl">warning</span>
+                            <div>
+                                <h3 class="font-bold text-red-900 dark:text-red-300">
+                                    🔴 <span th:text="${proyectosRetrasados}">0</span> Proyecto(s) Retrasado(s)</h3>
+                                <p class="text-sm text-red-700 dark:text-red-400 mt-1">
+                                    Proyectos que superaron su fecha de finalización</p>
+                            </div>
+                        </div>
+                        <button onclick="verProyectosRetrasados()"
+                                class="px-3 py-1 text-sm font-semibold bg-red-600 text-white rounded hover:bg-red-700 transition-colors whitespace-nowrap">
+                            Ver Detalles
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Alerta: Proyectos en Riesgo de Presupuesto -->
+                <div th:if="${proyectosEnRiesgo > 0}"
+                     class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-600 p-4 rounded-lg">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl">alert</span>
+                            <div>
+                                <h3 class="font-bold text-yellow-900 dark:text-yellow-300">
+                                    ⚠️ <span th:text="${proyectosEnRiesgo}">0</span> Proyecto(s) Fuera de Presupuesto</h3>
+                                <p class="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
+                                    Proyectos con costo acumulado > 90% del presupuesto</p>
+                            </div>
+                        </div>
+                        <button onclick="verProyectosEnRiesgo()"
+                                class="px-3 py-1 text-sm font-semibold bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors whitespace-nowrap">
+                            Ver Detalles
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="flex flex-col lg:flex-row gap-8">
-                <div class="flex-1 flex flex-col gap-6">
-                    <div class="flex flex-wrap justify-between items-center gap-3">
-                        <div class="flex flex-col gap-1">
-                            <h1 class="text-gray-900 dark:text-white text-3xl font-black tracking-tight">Calendario de Proyectos</h1>
-                            <p class="text-gray-500 dark:text-gray-400 text-base">SC LLAMKAY SAC</p>
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+                <!-- Calendario (izquierda, flex-1) -->
+                <div class="flex-1">
+                    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                        <div>
+                            <h1 class="text-2xl lg:text-3xl font-black tracking-tight text-gray-900 dark:text-white">
+                                Calendario de Proyectos</h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">SC LLAMKAY SAC</p>
                         </div>
                     </div>
-
-                    <!-- Filtros de búsqueda 
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <div class="flex-1">
-                            <label class="flex flex-col min-w-40 h-12 w-full">
-                                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
-                                    <div class="text-gray-500 dark:text-gray-400 flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 items-center justify-center pl-4 rounded-l-lg border-r-0">
-                                        <span class="material-symbols-outlined mr-4" >search</span>
-                                    </div>
-                                    <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 h-full placeholder:text-gray-500 dark:placeholder-text-gray-400 px-4 text-base font-normal leading-normal" placeholder="Buscar un proyecto..." value=""/>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="flex gap-3 items-center">
-                            <button class="flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4">
-                                <p class="text-gray-800 dark:text-gray-200 text-sm font-medium">Tipo de Proyecto</p>
-                                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">arrow_drop_down</span>
-                            </button>
-                            <button class="flex h-12 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4">
-                                <p class="text-gray-800 dark:text-gray-200 text-sm font-medium">Estado</p>
-                                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">arrow_drop_down</span>
-                            </button>
-                        </div>
-                    </div>
-                    -->
 
                     <!-- Aquí se inserta el calendario dinámico -->
                     <section th:replace="~{fragments/calendar :: calendar}"></section>
                 </div>
 
-                <!-- Panel lateral de resumen - ACTUALIZADO CON DATOS DINÁMICOS -->
-                <div class="w-full lg:w-80 flex flex-col gap-6">
-                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Resumen de Proyectos</h2>
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
-                        <div class="flex items-start gap-4 items-center">
-                            <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-lg flex">
+                <!-- Panel lateral de resumen (derecha, w-full lg:w-80) -->
+                <div class="w-full lg:w-80 flex flex-col gap-4">
+                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Resumen Ejecutivo</h2>
+
+                    <!-- Card: Proyectos Activos -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-lg">
                                 <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">workspaces</span>
                             </div>
                             <div>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white" th:text="${proyectosActivos}">0</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Proyectos Activos</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-white" th:text="${proyectosActivos}">0</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Activos Ahora</p>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
-                        <div class="flex items-start gap-4 items-center">
-                            <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg flex">
-                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">hourglass_top</span>
+
+                    <!-- Card: Proyectos en Progreso -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-lg">
+                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">trending_up</span>
                             </div>
                             <div>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white" th:text="${proyectosEnProgreso}">0</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">En Progreso</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-white" th:text="${proyectosEnProgreso}">0</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">En Progreso</p>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm flex flex-col gap-4">
-                        <div class="flex items-start gap-4 items-center">
-                            <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-lg flex">
+
+                    <!-- Card: Proyectos Completados -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-lg">
                                 <span class="material-symbols-outlined text-green-600 dark:text-green-400">task_alt</span>
                             </div>
                             <div>
-                                <p class="text-3xl font-bold text-gray-900 dark:text-white" th:text="${proyectosFinalizados}">0</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Finalizados</p>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-white" th:text="${proyectosFinalizados}">0</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Finalizados</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Proyectos Retrasados (CRÍTICO) -->
+                    <div th:if="${proyectosRetrasados > 0}"
+                         class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-red-100 dark:bg-red-900/50 p-3 rounded-lg animate-pulse">
+                                <span class="material-symbols-outlined text-red-600 dark:text-red-400">priority_high</span>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-red-700 dark:text-red-400" th:text="${proyectosRetrasados}">0</p>
+                                <p class="text-xs text-red-600 dark:text-red-400 font-semibold">🔴 RETRASADOS</p>
+                            </div>
+                        </div>
+                        <button onclick="verProyectosRetrasados()"
+                                class="w-full mt-3 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition-colors">
+                            Ver Lista
+                        </button>
+                    </div>
+
+                    <!-- Card: Proyectos en Riesgo (CRÍTICO) -->
+                    <div th:if="${proyectosEnRiesgo > 0}"
+                         class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg">
+                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">warning</span>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-yellow-700 dark:text-yellow-400" th:text="${proyectosEnRiesgo}">0</p>
+                                <p class="text-xs text-yellow-600 dark:text-yellow-400 font-semibold">⚠️ PRESUPUESTO EN RIESGO</p>
+                            </div>
+                        </div>
+                        <button onclick="verProyectosEnRiesgo()"
+                                class="w-full mt-3 py-2 bg-yellow-600 text-white text-xs font-bold rounded hover:bg-yellow-700 transition-colors">
+                            Ver Lista
+                        </button>
+                    </div>
+
+                    <!-- Información de Ayuda -->
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-3 text-xs">
+                        <div class="flex gap-2">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 flex-shrink-0 text-sm">info</span>
+                            <div>
+                                <p class="font-semibold text-blue-900 dark:text-blue-300 mb-1">💡 Tips</p>
+                                <ul class="text-blue-800 dark:text-blue-400 space-y-1 text-xs list-disc list-inside">
+                                    <li>Click en "Ver" muestra proyectos del día</li>
+                                    <li>Rojo = Retrasado | Azul = En Curso</li>
+                                    <li>Verde = Completado | Naranja = Pausado</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -125,5 +194,67 @@
         </main>
     </div>
 </div>
+
+<!-- Modal: Proyectos Retrasados -->
+<div id="modalRetrasados" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none z-50 transition-opacity">
+    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-2xl p-6 max-h-[80vh] overflow-y-auto transform scale-95 transition-transform">
+        <h2 class="text-xl font-bold text-red-700 dark:text-red-400 mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined">priority_high</span>
+            Proyectos Retrasados
+        </h2>
+
+        <div id="listaRetrasados" class="space-y-3">
+            <div th:each="p : ${listadoProyectosRetrasados}"
+                 class="border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start mb-2">
+                    <div>
+                        <h3 class="font-bold text-gray-900 dark:text-white" th:text="${p.nombre}"></h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400" th:text="${p.cliente?.nombre}"></p>
+                    </div>
+                    <span class="text-xs font-bold text-red-700 dark:text-red-400" th:text="${p.estado}"></span>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    Vencía: <span th:text="${#temporals.format(p.fechaFin, 'dd/MM/yyyy')}"></span>
+                </p>
+                <a th:href="@{/proyectos/detalle/{id}(id=${p.idProyecto})}"
+                   class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold bg-red-600 text-white rounded hover:bg-red-700">
+                    <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    Ver Detalle
+                </a>
+            </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+            <button onclick="cerrarModalRetrasados()"
+                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm hover:bg-gray-300">
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function verProyectosRetrasados() {
+        const modal = document.getElementById('modalRetrasados');
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.querySelector('div').classList.remove('scale-95');
+    }
+
+    function cerrarModalRetrasados() {
+        const modal = document.getElementById('modalRetrasados');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.querySelector('div').classList.add('scale-95');
+    }
+
+    function verProyectosEnRiesgo() {
+        alert('Implementar vista de proyectos en riesgo de presupuesto');
+    }
+
+    // Cerrar con click fuera
+    document.getElementById('modalRetrasados').addEventListener('click', function(e) {
+        if (e.target === this) cerrarModalRetrasados();
+    });
+</script>
+
 </body>
 </html>

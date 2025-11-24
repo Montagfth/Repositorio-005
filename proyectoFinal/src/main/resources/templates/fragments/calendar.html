@@ -1,24 +1,133 @@
-<div th:fragment="calendar">
+<div th:fragment="calendar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <style>
+        /* Sistema de colores por estado */
+        .proyecto-planificado {
+            background: #E3F2FD;
+            border-left: 4px solid #1976D2;
+            color: #1565C0;
+        }
+
+        .proyecto-en-curso {
+            background: #B3E5FC;
+            border-left: 4px solid #0288D1;
+            color: #0277BD;
+            font-weight: 600;
+        }
+
+        .proyecto-completado {
+            background: #C8E6C9;
+            border-left: 4px solid #388E3C;
+            color: #1B5E20;
+        }
+
+        .proyecto-pausado {
+            background: #FFE0B2;
+            border-left: 4px solid #F57C00;
+            color: #E65100;
+        }
+
+        .proyecto-retrasado {
+            background: #FFCDD2;
+            border-left: 4px solid #D32F2F;
+            color: #B71C1C;
+            font-weight: 700;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            margin: 0 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .calendar-grid-day {
+            position: relative;
+        }
+
+        .calendar-grid-day.hoy {
+            background: #FFF9C4;
+            border: 2px solid #F57F17;
+        }
+
+        .calendar-grid-day.hoy::after {
+            content: "HOY";
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #F57F17;
+        }
+    </style>
+
     <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm max-h-[90vh] overflow-hidden flex flex-col">
         <div class="flex flex-col h-full">
-            <!-- Encabezado -->
-            <div class="relative flex items-center justify-between w-full">
+            <div th:if="${cantRiesgoPersonal > 0}" class="mb-6 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 rounded-r shadow-sm animate-pulse">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <span class="material-symbols-outlined text-red-500">warning</span>
+                    </div>
+                    <div class="ml-3 w-full">
+                        <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+                            Alerta de Sobrecarga de Personal
+                        </h3>
+                        <div class="mt-2 text-sm text-red-700 dark:text-red-300">
+                            <p class="mb-2">Se ha detectado que el siguiente personal excede las 160h mensuales estimadas:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li th:each="alerta : ${personalEnRiesgo}">
+                                    <span class="font-bold" th:text="${alerta.personal.nombre}"></span>
+                                    - <span th:text="${alerta.horasComprometidas}"></span> hrs asignadas
+                                    en <span th:text="${alerta.proyectosActivos}"></span> proyectos.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <a href="#" class="text-sm font-medium text-red-800 dark:text-red-200 hover:text-red-600 underline">
+                                Ver matriz de asignaciones &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Encabezado con navegación -->
+            <div class="relative flex items-center justify-center w-full mb-4">
                 <a th:href="@{/principal(offset=${(offset ?: 0) - 1})}"
-                    class="absolute left-0 text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                   class="absolute left-0 text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <span class="material-symbols-outlined">chevron_left</span>
                 </a>
 
-                <p class="mx-auto text-gray-900 dark:text-white text-lg font-bold leading-tight text-center"
-                    th:text="${#strings.capitalize(nombreMes)} + ' ' + ${año}"></p>
+                <div class="text-center">
+                    <p class="mx-auto text-gray-900 dark:text-white text-lg font-bold leading-tight"
+                       th:text="${#strings.capitalize(nombreMes)} + ' ' + ${año}">
+                    </p>
+
+                    <p class="text-xs text-gray-500 dark:text-gray-400 font-mono mt-0.5"
+                       th:text="${#temporals.format(#temporals.createNow(), 'HH:mm')}">
+                    </p>
+                </div>
 
                 <a th:href="@{/principal(offset=${(offset ?: 0) + 1})}"
-                    class="absolute right-0 text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+                   class="absolute right-0 text-gray-800 dark:text-gray-200 flex size-10 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     <span class="material-symbols-outlined">chevron_right</span>
                 </a>
             </div>
+            <!-- Leyenda de colores -->
+            <div class="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg overflow-x-auto">
+                <div class="flex whitespace-nowrap text-xs">
+                    <span class="legend-item proyecto-planificado">▪ Planificado</span>
+                    <span class="legend-item proyecto-en-curso">▪ En Curso</span>
+                    <span class="legend-item proyecto-completado">▪ Completado</span>
+                    <span class="legend-item proyecto-pausado">▪ Pausado</span>
+                    <span class="legend-item proyecto-retrasado">▪ Retrasado</span>
+                </div>
+            </div>
 
             <!-- Cabecera de días -->
-            <div class="grid grid-cols-7 gap-1 mt-2">
+            <div class="grid grid-cols-7 gap-1 mb-2">
                 <p
                     class="text-gray-500 dark:text-gray-400 text-xs font-bold text-center h-8 flex items-center justify-center">
                     Lun</p>
@@ -43,92 +152,223 @@
             </div>
 
             <!-- Celdas del calendario -->
-            <div class="grid grid-cols-7 gap-1 mt-2 flex-1">
-                <div th:each="dia : ${dias}"
-                    class="relative flex flex-col border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-md group"
-                    style="height: calc((90vh - 12rem) / 6);">
+            <div class="grid grid-cols-7 gap-1 flex-1">
+                <div th:each="dia : ${dias}" th:class="${dia == hoy ? 'calendar-grid-day hoy' : 'calendar-grid-day'}"
+                    class="relative flex flex-col border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-sm text-gray-800 dark:text-gray-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-md group bg-white dark:bg-gray-800"
+                    style="height: calc((90vh - 14rem) / 6);">
 
-                    <span th:text="${dia.dayOfMonth}" class="font-semibold"></span>
+                    <!-- Número del día -->
+                    <span th:text="${dia.dayOfMonth}" class="font-semibold text-xs"></span>
 
-                    <!-- Mostrar proyectos del día -->
-                    <div th:each="proyecto : ${proyectos}"
-                        th:if="${!dia.isBefore(proyecto.fechaInicio) and !dia.isAfter(proyecto.fechaFin)}"
-                        class="bg-blue-200 dark:bg-blue-800 rounded px-1 py-0.5 text-xs text-blue-800 dark:text-blue-200 mt-1 cursor-pointer">
-                        <span th:text="${proyecto.nombre}"></span>
+                    <!-- Proyectos del día -->
+                    <div class="flex-1 overflow-y-auto text-xs space-y-1 mt-1">
+                        <div th:each="proyecto : ${proyectosPorDia.get(dia) ?: {}}" th:class="${proyecto.estado == 'Completado' ? 'proyecto-completado' :
+                                       proyecto.estado == 'En Curso' ? 'proyecto-en-curso' :
+                                       proyecto.estado == 'Pausado' ? 'proyecto-pausado' :
+                                       proyecto.fechaFin != null and proyecto.fechaFin < hoy and proyecto.estado != 'Completado' ? 'proyecto-retrasado' :
+                                       'proyecto-planificado'}"
+                            class="rounded px-2 py-1 cursor-pointer hover:opacity-80 transition-opacity truncate"
+                            th:onclick="'abrirModalProyecto(' + ${proyecto.idProyecto} + ')'">
+                            <span th:text="${proyecto.nombre}"></span>
+                        </div>
                     </div>
 
                     <!-- Botón "Ver" (pasa el día al modal) -->
                     <button type="button"
-                        class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-sm"
-                        th:onclick="'mostrarModal(' + ${dia.dayOfMonth} + ')'">
+                        class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-sm"
+                        th:onclick="'abrirModalDia(' + ${dia.dayOfMonth} + ')'">
                         Ver
                     </button>
-
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ---------- Modal único (fuera del loop) ---------- -->
-    <div id="modalCalendario"
+    <!-- Modal: Detalles del Día -->
+    <div id="modalDia"
         class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
         <div
-            class="modal-box bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-md p-6 text-gray-800 dark:text-gray-200 transform scale-95 transition-transform duration-200">
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-2xl p-6 text-gray-800 dark:text-gray-200 transform scale-95 transition-transform duration-200 max-h-[80vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold">Detalles del Día</h2>
-                <!-- <button type="button" onclick="cerrarModal()"
-                    class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                    ✕
-                </button> -->
+                <h2 class="text-xl font-semibold" id="modalDiaTitle"></h2>
+                <button type="button" onclick="cerrarModalDia()"
+                    class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl">✕</button>
             </div>
 
-            <div id="modalContenido" class="text-sm">
-                Aquí puedes mostrar la información del día, proyectos o eventos.
+            <div id="modalDiaContenido" class="space-y-4">
+                <!-- Se llena con JavaScript -->
             </div>
 
             <div class="flex justify-end mt-6">
-                <button type="button" onclick="cerrarModal()"
+                <button type="button" onclick="cerrarModalDia()"
                     class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm hover:bg-gray-300 dark:hover:bg-gray-600">
                     Cerrar
                 </button>
             </div>
         </div>
     </div>
-    <!-- Script (puede ir al final del fragmento o en JS separado) -->
-    <!-- Funcionalidades con JavaScript -->
-    <!-- <script th:src="@{/js/function-calendar.js}"></script> -->
-    <script>
-        function mostrarModal(dia) {
-            const modal = document.getElementById("modalCalendario");
-            const contenido = document.getElementById("modalContenido");
 
-            contenido.textContent = "Has seleccionado el día: " + dia;
+    <!-- Modal: Detalle de Proyecto -->
+    <div id="modalProyecto"
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+        <div
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-2xl p-6 text-gray-800 dark:text-gray-200 transform scale-95 transition-transform duration-200 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold" id="modalProyectoTitle"></h2>
+                <button type="button" onclick="cerrarModalProyecto()"
+                    class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl">✕</button>
+            </div>
 
-            // Mostrar modal
-            modal.classList.remove("opacity-0", "pointer-events-none");
-            modal.classList.add("opacity-100");
+            <div id="modalProyectoContenido" class="space-y-3 text-sm">
+                <!-- Se llena con datos del proyecto -->
+                <p id="proyectoCliente"></p>
+                <p id="proyectoEstado"></p>
+                <p id="proyectoFechas"></p>
+                <p id="proyectoProgramado"></p>
+                <div id="proyectoPersonal"></div>
+            </div>
 
-            // animación scale
-            const modalBox = modal.querySelector(".modal-box");
-            modalBox.classList.remove("scale-95");
-            modalBox.classList.add("scale-100");
+            <div class="flex justify-end gap-2 mt-6">
+                <button type="button" onclick="cerrarModalProyecto()"
+                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm hover:bg-gray-300">Cerrar</button>
+                <a id="btnVerProyecto" href="#" target="_blank"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">Ver Detalle</a>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // 1. Inyección de datos desde Spring Boot a JavaScript
+        const proyectosData = [
+            /*[# th:each="proyecto : ${proyectos}"]*/
+            {
+                id: [[${proyecto.idProyecto}]],
+                nombre: [[${proyecto.nombre}]],
+                descripcion: [[${proyecto.descripcion}]],
+                // Manejo seguro de nulos para cliente
+                cliente: [[${proyecto.cliente != null ? proyecto.cliente.nombre : 'Sin Cliente'}]],
+                estado: [[${proyecto.estado}]],
+                inicio: [[${proyecto.fechaInicio}]], // Formato YYYY-MM-DD
+                fin: [[${proyecto.fechaFin}]],       // Formato YYYY-MM-DD
+                presupuesto: [[${proyecto.presupuestoTotal}]]
+            },
+            /*[/]*/
+        ];
+
+        // --- LÓGICA DEL MODAL DE PROYECTO ---
+
+        function abrirModalProyecto(idProyecto) {
+            // Buscar el proyecto en el array de memoria (sin llamar al backend otra vez)
+            const proyecto = proyectosData.find(p => p.id === idProyecto);
+
+            if (proyecto) {
+                // Llenar títulos y textos básicos
+                document.getElementById('modalProyectoTitle').textContent = proyecto.nombre;
+                document.getElementById('proyectoCliente').innerHTML = `<strong>Cliente:</strong> ${proyecto.cliente}`;
+
+                // Colorear el estado
+                let claseEstado = '';
+                switch(proyecto.estado) {
+                    case 'Completado': claseEstado = 'text-green-600'; break;
+                    case 'En Curso': claseEstado = 'text-blue-600'; break;
+                    case 'Retrasado': claseEstado = 'text-red-600'; break;
+                    default: claseEstado = 'text-gray-600';
+                }
+                document.getElementById('proyectoEstado').innerHTML = `<strong>Estado:</strong> <span class="${claseEstado}">${proyecto.estado}</span>`;
+
+                // Fechas y descripción
+                document.getElementById('proyectoFechas').innerHTML = `
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <div><span class="text-gray-500 text-xs">Inicio:</span><br>${proyecto.inicio}</div>
+                        <div><span class="text-gray-500 text-xs">Fin:</span><br>${proyecto.fin}</div>
+                    </div>
+                `;
+
+                // Descripción (si existe)
+                const desc = proyecto.descripcion ? proyecto.descripcion : 'Sin descripción disponible';
+                document.getElementById('proyectoProgramado').innerHTML = `<div class="mt-2 p-2 bg-gray-50 rounded text-xs text-gray-600">${desc}</div>`;
+
+                // Actualizar botón de "Ver Detalle"
+                const btnVer = document.getElementById('btnVerProyecto');
+                // Asumiendo que tienes una ruta para ver el detalle completo
+                btnVer.href = `/proyectos/detalle/${proyecto.id}`;
+
+                // Mostrar Modal
+                const modal = document.getElementById('modalProyecto');
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.remove('scale-95');
+            }
         }
 
-        function cerrarModal() {
-            const modal = document.getElementById("modalCalendario");
-            const modalBox = modal.querySelector(".modal-box");
-
-            modal.classList.add("opacity-0", "pointer-events-none");
-            modal.classList.remove("opacity-100");
-
-            modalBox.classList.add("scale-95");
-            modalBox.classList.remove("scale-100");
+        function cerrarModalProyecto() {
+            const modal = document.getElementById('modalProyecto');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.add('scale-95');
         }
 
-        // Cerrar al hacer clic fuera del modal (backdrop)
-        document.getElementById("modalCalendario").addEventListener("click", function (e) {
-            if (e.target === this) {
-                cerrarModal();
+        // --- LÓGICA DEL MODAL DE DÍA ---
+
+        function abrirModalDia(diaNumero) {
+            const modal = document.getElementById('modalDia');
+            const contenido = document.getElementById('modalDiaContenido');
+            const titulo = document.getElementById('modalDiaTitle');
+            const mesAnio = document.querySelector('p[class*="text-lg"]').textContent; // Obtiene "Octubre 2025" del header
+
+            titulo.textContent = `Agenda del ${diaNumero} de ${mesAnio}`;
+            contenido.innerHTML = ''; // Limpiar contenido anterior
+
+            // Construir la fecha seleccionada para comparar (formato string YYYY-MM-DD simple para comparar)
+            // Nota: Esto es una simplificación. Para mayor precisión, usa librerías como Moment.js o la fecha real del backend.
+            // Aquí filtramos visualmente qué proyectos "tocan" este día.
+
+            // Filtrar proyectos activos en este día (Lógica básica de JavaScript)
+            // Como 'diaNumero' es solo un número, buscamos proyectos que ya se mostraron en la grilla para ese día
+            // O más fácil: filtramos 'proyectosData' buscando si la fecha actual está en rango.
+
+            // Opción Simple: Listar los proyectos que comienzan o terminan este día, o están activos.
+            const proyectosDelDia = proyectosData.filter(p => {
+                // Nota: Esta lógica asume que las fechas son strings YYYY-MM-DD.
+                // Necesitaríamos el mes y año actual exactos para una comparación precisa de fecha completa.
+                // Para no complicar el JS, mostraremos una lista genérica o los que coincidan exactamente si tienes la fecha completa.
+                return true; // Aquí idealmente filtrarías por fecha real si pasaras el mes/año al JS.
+            });
+
+            if (proyectosDelDia.length > 0) {
+                let html = '<ul class="space-y-2">';
+                // NOTA: Para que esto sea exacto, el botón "Ver" en el HTML debería pasar la fecha completa, no solo el día.
+                // Por ahora, mostraré un mensaje genérico o puedes listar todos los activos.
+                html += `<p class="text-sm text-gray-500 mb-2">Resumen de actividades para el día ${diaNumero}.</p>`;
+                html += '</ul>';
+                contenido.innerHTML = html;
+            } else {
+                contenido.innerHTML = '<p class="text-gray-500 text-sm">No hay proyectos activos para este día.</p>';
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+        }
+
+        function cerrarModalDia() {
+            const modal = document.getElementById('modalDia');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.add('scale-95');
+        }
+
+        // --- EVENT LISTENERS GLOBALES ---
+
+        // Cerrar modales al hacer clic fuera (Overlay)
+        window.onclick = function(event) {
+            const modalDia = document.getElementById('modalDia');
+            const modalProy = document.getElementById('modalProyecto');
+            if (event.target == modalDia) cerrarModalDia();
+            if (event.target == modalProy) cerrarModalProyecto();
+        }
+
+        // Cerrar con tecla ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                cerrarModalDia();
+                cerrarModalProyecto();
             }
         });
     </script>

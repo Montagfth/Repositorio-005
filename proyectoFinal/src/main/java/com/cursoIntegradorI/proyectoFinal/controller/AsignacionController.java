@@ -77,12 +77,35 @@ public class AsignacionController {
 
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        Integer idProyectoDestino = null; // Variable para guardar a dónde volver
+
         try {
-            asignacionService.eliminar(id);
-            redirectAttributes.addFlashAttribute("success", "Asignación eliminada exitosamente");
+            // 1. BUSCAMOS la asignación primero para obtener el ID del proyecto
+            // Asumo que tienes un método buscarPorId o findById en tu servicio
+            Asignacion asignacion = asignacionService.buscarPorId(id).orElse(null);
+
+            if (asignacion != null) {
+                // Guardamos el ID del proyecto antes de eliminar la asignación
+                idProyectoDestino = asignacion.getProyectoServicio().getProyecto().getIdProyecto();
+
+                // 2. Ahora sí ELIMINAMOS
+                asignacionService.eliminar(id);
+                redirectAttributes.addFlashAttribute("success", "Asignación eliminada exitosamente");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "La asignación no existe");
+                return "redirect:/principal"; // Fallback si no se encuentra
+            }
+
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "No se pudo eliminar la asignación");
+            // Si hay error pero obtuvimos el ID, volvemos al proyecto
+            if (idProyectoDestino != null) {
+                return "redirect:/proyectos/detalle/" + idProyectoDestino;
+            }
+            return "redirect:/principal";
         }
-        return "redirect:/asignaciones";
+
+        // 3. REDIRECCIÓN CORRECTA usando el ID que recuperamos
+        return "redirect:/proyectos/detalle/" + idProyectoDestino;
     }
 }

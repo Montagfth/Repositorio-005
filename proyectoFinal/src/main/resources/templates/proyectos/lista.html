@@ -142,9 +142,10 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <span th:class="${proyecto.estado == 'Completado' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
-                                                     proyecto.estado == 'En Curso' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' :
-                                                     proyecto.estado == 'Pausado' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
-                                                     'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'}"
+                                                        proyecto.estado == 'En Curso' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' :
+                                                        proyecto.estado == 'Pausado' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
+                                                        proyecto.estado == 'Retrasado' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 font-bold' :
+                                                        'bg-sky-100 dark:bg-sky-900/30 text-sky-800 dark:text-sky-300'}"
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
                                             <span th:text="${proyecto.estado}">Estado</span>
                                         </span>
@@ -157,10 +158,10 @@
                                                 <span class="material-symbols-outlined text-xl">visibility</span>
                                             </a>
                                             <button th:data-id="${proyecto.idProyecto}"
-                                                    th:data-nombre="${proyecto.nombre}"
-                                                    onclick="confirmarEliminar(this.dataset.id, this.dataset.nombre)"
-                                                    class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg"
-                                                    title="Eliminar">
+                                                th:data-nombre="${proyecto.nombre}"
+                                                onclick="confirmarEliminar(this.dataset.id, this.dataset.nombre)"
+                                                class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg"
+                                                title="Eliminar">
                                                 <span class="material-symbols-outlined text-xl">delete</span>
                                             </button>
                                         </div>
