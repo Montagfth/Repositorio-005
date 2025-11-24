@@ -1,5 +1,5 @@
-# Proyecto Final | Curso Integrador I: Sistemas en Software
-###### Programador(es): Montañez Fabrizio · Revilla Ariel 
+# Aplicacion Web para empresa de Telecomunicaciones "LLAMKAY S.A.C"(Proyecto Final) | Curso Integrador I: Sistemas - Software
+###### Desarrollador(es): Montañez Fabrizio · Revilla Ariel 
 
 #### 1. Descripcion General:
 ##### Introduccion:
