@@ -21,12 +21,15 @@ Lista de los 6 módulos de negocio principales:
 #### 3. Stack Tecnologico:
 Tecnologias que se emplearon en el proyecto
 
-| **Back-End**        | **Front-End**   |  **Base de Datos**  | **Seguridad**| **Testing** |
-| --------   | -----:  | :----:  | | |
-| ![](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white)        | ![](https://img.shields.io/badge/Thymeleaf-005F0F?logo=thymeleaf&logoColor=white)   |   ![](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)     | ![](https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity&logoColor=white)  | ![](https://img.shields.io/badge/JUnit_5-25A162?logo=junit5&logoColor=white)  |
-| ![](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white)        |   ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white)   |   ![](https://img.shields.io/badge/H2-004088?logo=h2&logoColor=white)   | ![](https://img.shields.io/badge/BCrypt-000000) | ![](https://img.shields.io/badge/Mockito-2A8E6A) |
-| -        |    -    |  -  | - | ![](https://img.shields.io/badge/Testcontainers-3D8EB9?logo=testcontainers&logoColor=white) |
-| -        |    -    |  -  | - | ![](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white)|
+#### 3. Stack Tecnológico:
+Tecnologías que se emplearon en el proyecto
+
+| **Back-End** | **Front-End** | **Base de Datos** | **Seguridad** | **Testing** |
+|--------------|----------------|-------------------|----------------|-------------|
+| ![](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white) | ![](https://img.shields.io/badge/Thymeleaf-005F0F?logo=thymeleaf&logoColor=white) | ![](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white) | ![](https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity&logoColor=white) | ![](https://img.shields.io/badge/JUnit_5-25A162?logo=junit5&logoColor=white) |
+| ![](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white) | ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white) | ![](https://img.shields.io/badge/H2-004088?logo=h2&logoColor=white) | ![](https://img.shields.io/badge/BCrypt-000000) | ![](https://img.shields.io/badge/Mockito-2A8E6A) |
+| - | - | - | - | ![](https://img.shields.io/badge/Testcontainers-3D8EB9?logo=testcontainers&logoColor=white) |
+| - | - | - | - | ![](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white) |
 
 #### 4. Requisitos Previos:
 Se requiere:
