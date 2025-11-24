@@ -21,41 +21,22 @@ Lista de los 6 módulos de negocio principales:
 #### 3. Stack Tecnologico:
 Tecnologias que se emplearon en el proyecto
 
-**Back-End:**
-  - ![](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white)  
-  - ![](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white)
-
-**Front-End:**  
-  -  ![](https://img.shields.io/badge/Thymeleaf-005F0F?logo=thymeleaf&logoColor=white)  
-  -  ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white)
-
-**Base de Datos:**  
-  -  ![](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)  
-  -  ![](https://img.shields.io/badge/H2-004088?logo=h2&logoColor=white)
-
-**Seguridad:**  
-  -  ![](https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity&logoColor=white)  
-  -  ![](https://img.shields.io/badge/BCrypt-000000)
-
-**Testing:**  
-  -  ![](https://img.shields.io/badge/JUnit_5-25A162?logo=junit5&logoColor=white)  
-  -  ![](https://img.shields.io/badge/Mockito-2A8E6A)  
-  -  ![](https://img.shields.io/badge/Testcontainers-3D8EB9?logo=testcontainers&logoColor=white)  
-  -  ![](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white)
+| **Back-End**        | **Front-End**   |  **Base de Datos**  | **Seguridad**| **Testing** |
+| --------   | -----:  | :----:  | | |
+| ![](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white)        | ![](https://img.shields.io/badge/Thymeleaf-005F0F?logo=thymeleaf&logoColor=white)   |   ![](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)     | ![](https://img.shields.io/badge/Spring%20Security-6DB33F?logo=springsecurity&logoColor=white)  | ![](https://img.shields.io/badge/JUnit_5-25A162?logo=junit5&logoColor=white)  |
+| ![](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white)        |   ![](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white)   |   ![](https://img.shields.io/badge/H2-004088?logo=h2&logoColor=white)   | ![](https://img.shields.io/badge/BCrypt-000000) | ![](https://img.shields.io/badge/Mockito-2A8E6A) |
+| -        |    -    |  -  | - | ![](https://img.shields.io/badge/Testcontainers-3D8EB9?logo=testcontainers&logoColor=white) |
+| -        |    -    |  -  | - | ![](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white)|
 
 #### 4. Requisitos Previos:
 Se requiere:
-- **Java 21** (O posteriores)  
-  ![](https://img.shields.io/badge/Java_21-007396?logo=java&logoColor=white)
 
-- **Maven 3.x** (O posteriores)
-  ![](https://img.shields.io/badge/Maven_3.x-C71A36?logo=apachemaven&logoColor=white)
-
-- **MySQL 8.x** (O posteriores) 
-  ![](https://img.shields.io/badge/MySQL_8.x-4479A1?logo=mysql&logoColor=white)
-
-- **Navegador Web Moderno**  
-  ![](https://img.shields.io/badge/Browser-Chrome%20%7C%20Firefox%20%7C%20Edge-4285F4?logo=googlechrome&logoColor=white)
+| Requisito(s):        | Version(es) Sugerida(s):   |
+| --------   | -----:  |
+| ![](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white)      | 21 (+21 posteriores)   |
+| ![](https://img.shields.io/badge/Maven-C71A36?logo=apachemaven&logoColor=white)        |   3.x (+3.0 posteriores)   |
+| ![](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)        |    8.x (8.0 posteriores)   |
+| ![](https://img.shields.io/badge/Browser-Chrome%20%7C%20Firefox%20%7C%20Edge-4285F4?logo=googlechrome&logoColor=white)        |    Mantener actualizada la version del navegador    |
 
 #### 5. Instalacion & Configuracion:
 Pasos para configurar la base de datos en la seccion de: **application.properties**:
@@ -92,15 +73,10 @@ Mapeo de controladores a rutas:
 #### 8. Testing del Sistema:
 Estrategia de pruebas con cobertura mínima del **50%**:
 
-- **Unit Tests:**  
-  -  ![](https://img.shields.io/badge/JUnit_5-25A162?logo=junit5&logoColor=white)  
-  -  ![](https://img.shields.io/badge/Mockito-2A8E6A)
-
-- **Integration Tests:**  
-  -  ![](https://img.shields.io/badge/Testcontainers-3D8EB9?logo=testcontainers&logoColor=white)
-
-- **E2E Tests:**  
-  -  ![](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white)
+| **Unit Tests:**        | **Integration Tests:**   |  **E2E Tests:**  |
+| --------   | -----:  | :----:  |
+| ![](https://img.shields.io/badge/JUnit_5-25A162?logo=junit5&logoColor=white)        | ![](https://img.shields.io/badge/Testcontainers-3D8EB9?logo=testcontainers&logoColor=white)   |   ![](https://img.shields.io/badge/Selenium-43B02A?logo=selenium&logoColor=white)    |
+| ![](https://img.shields.io/badge/Mockito-2A8E6A)        |  -  |   -  |
 
 Comando de ejecucion de tests:
 
@@ -116,7 +92,10 @@ Diagrama o descripción de las entidades principales:
 #### 10. Contribucion:
 Proyecto educativo de curso de integracion de tecnologias estudiadas en **seis (06) ciclos**.
 
-#### 11. Contacto/Soporte:
+#### 11. Licencia:
+Universidad Tecnologica del Peru (UTP) | **Licencia gratuita académica v3.0** -`AFL-3.0` 
+
+#### 12. Contacto/Soporte:
 Información de contacto o enlaces relevantes:
 
 **Correos Institucionales** 
