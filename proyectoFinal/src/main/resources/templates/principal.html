@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario de Proyectos - SC LLAMKAY SAC</title>
+    <link rel="icon" type="image/png" th:href="@{/img/Logo.png}"/>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
     <script>
@@ -14,14 +17,23 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#1A237E",
+                        "primary": "#1193d4",
                         "background-light": "#f6f7f8",
                         "background-dark": "#101c22",
                         "accent-green": "#4CAF50",
                         "accent-red": "#F44336",
-                        "accent-orange": "#FF9800"
+                        "accent-orange": "#FF9800",
+                        "danger": "#D32F2F"
                     },
-                    fontFamily: { display: ["Manrope", "sans-serif"] },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
                 },
             },
         }
@@ -29,232 +41,367 @@
 </head>
 
 <body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
-<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+    <div class="relative flex h-screen w-full flex-row overflow-hidden">
+        <div class="layout-container flex h-full grow flex-row">
 
-    <div class="layout-container flex h-full grow flex-col lg:flex-row">
-        <!-- Sidebar importado -->
-        <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
+            <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
 
-        <!-- Contenido principal -->
-        <main class="flex-1 p-4 lg:p-8">
-            <!-- SECCIÓN DE ALERTAS -->
-            <div class="mb-6 space-y-3">
-                <!-- Alerta: Proyectos Retrasados -->
-                <div th:if="${proyectosRetrasados > 0}"
-                     class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600 p-4 rounded-lg">
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl">warning</span>
-                            <div>
-                                <h3 class="font-bold text-red-900 dark:text-red-300">
-                                    🔴 <span th:text="${proyectosRetrasados}">0</span> Proyecto(s) Retrasado(s)</h3>
-                                <p class="text-sm text-red-700 dark:text-red-400 mt-1">
-                                    Proyectos que superaron su fecha de finalización</p>
-                            </div>
-                        </div>
-                        <button onclick="verProyectosRetrasados()"
-                                class="px-3 py-1 text-sm font-semibold bg-red-600 text-white rounded hover:bg-red-700 transition-colors whitespace-nowrap">
-                            Ver Detalles
-                        </button>
-                    </div>
-                </div>
+            <main class="flex-1 w-0 h-full overflow-y-auto p-4 lg:p-8 relative">
 
-                <!-- Alerta: Proyectos en Riesgo de Presupuesto -->
-                <div th:if="${proyectosEnRiesgo > 0}"
-                     class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-600 p-4 rounded-lg">
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-start gap-3">
-                            <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl">alert</span>
-                            <div>
-                                <h3 class="font-bold text-yellow-900 dark:text-yellow-300">
-                                    ⚠️ <span th:text="${proyectosEnRiesgo}">0</span> Proyecto(s) Fuera de Presupuesto</h3>
-                                <p class="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
-                                    Proyectos con costo acumulado > 90% del presupuesto</p>
-                            </div>
-                        </div>
-                        <button onclick="verProyectosEnRiesgo()"
-                                class="px-3 py-1 text-sm font-semibold bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors whitespace-nowrap">
-                            Ver Detalles
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CONTENIDO PRINCIPAL -->
-            <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
-                <!-- Calendario (izquierda, flex-1) -->
-                <div class="flex-1">
-                    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
-                        <div>
-                            <h1 class="text-2xl lg:text-3xl font-black tracking-tight text-gray-900 dark:text-white">
-                                Calendario de Proyectos</h1>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">SC LLAMKAY SAC</p>
-                        </div>
-                    </div>
-
-                    <!-- Aquí se inserta el calendario dinámico -->
-                    <section th:replace="~{fragments/calendar :: calendar}"></section>
-                </div>
-
-                <!-- Panel lateral de resumen (derecha, w-full lg:w-80) -->
-                <div class="w-full lg:w-80 flex flex-col gap-4">
-                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Resumen Ejecutivo</h2>
-
-                    <!-- Card: Proyectos Activos -->
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-lg">
-                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">workspaces</span>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-white" th:text="${proyectosActivos}">0</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Activos Ahora</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card: Proyectos en Progreso -->
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-lg">
-                                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400">trending_up</span>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-white" th:text="${proyectosEnProgreso}">0</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">En Progreso</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card: Proyectos Completados -->
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-lg">
-                                <span class="material-symbols-outlined text-green-600 dark:text-green-400">task_alt</span>
-                            </div>
-                            <div>
-                                <p class="text-2xl font-bold text-gray-900 dark:text-white" th:text="${proyectosFinalizados}">0</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Finalizados</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card: Proyectos Retrasados (CRÍTICO) -->
+                <div class="mb-6 space-y-3">
                     <div th:if="${proyectosRetrasados > 0}"
-                         class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-red-100 dark:bg-red-900/50 p-3 rounded-lg animate-pulse">
-                                <span class="material-symbols-outlined text-red-600 dark:text-red-400">priority_high</span>
+                        class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-600 p-4 rounded-lg shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-start gap-3">
+                                <span
+                                    class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl flex-shrink-0">warning</span>
+                                <div>
+                                    <h3 class="font-bold text-red-900 dark:text-red-300 leading-tight">
+                                        🔴 <span th:text="${proyectosRetrasados}">0</span> Proyecto(s) Retrasado(s)
+                                    </h3>
+                                    <p class="text-sm text-red-700 dark:text-red-400 mt-1">
+                                        Proyectos que superaron su fecha de finalización
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-2xl font-bold text-red-700 dark:text-red-400" th:text="${proyectosRetrasados}">0</p>
-                                <p class="text-xs text-red-600 dark:text-red-400 font-semibold">🔴 RETRASADOS</p>
-                            </div>
+                            <button onclick="verProyectosRetrasados()"
+                                class="w-full sm:w-auto px-4 py-2 text-sm font-semibold bg-red-600 text-white rounded hover:bg-red-700 transition-colors whitespace-nowrap shadow-sm">
+                                Ver Detalles
+                            </button>
                         </div>
-                        <button onclick="verProyectosRetrasados()"
-                                class="w-full mt-3 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition-colors">
-                            Ver Lista
-                        </button>
                     </div>
 
-                    <!-- Card: Proyectos en Riesgo (CRÍTICO) -->
                     <div th:if="${proyectosEnRiesgo > 0}"
-                         class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg">
-                                <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">warning</span>
+                        class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-600 p-4 rounded-lg shadow-sm">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-start gap-3">
+                                <span
+                                    class="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl flex-shrink-0">alert</span>
+                                <div>
+                                    <h3 class="font-bold text-yellow-900 dark:text-yellow-300 leading-tight">
+                                        ⚠️ <span th:text="${proyectosEnRiesgo}">0</span> Proyecto(s) Fuera de
+                                        Presupuesto
+                                    </h3>
+                                    <p class="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
+                                        Costo acumulado > 90% del presupuesto
+                                    </p>
+                                </div>
                             </div>
+                            <button onclick="verProyectosFueraPresupuesto()"
+                                class="w-full sm:w-auto px-4 py-2 text-sm font-semibold bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors whitespace-nowrap shadow-sm">
+                                Ver Detalles
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
                             <div>
-                                <p class="text-2xl font-bold text-yellow-700 dark:text-yellow-400" th:text="${proyectosEnRiesgo}">0</p>
-                                <p class="text-xs text-yellow-600 dark:text-yellow-400 font-semibold">⚠️ PRESUPUESTO EN RIESGO</p>
+                                <h1
+                                    class="text-2xl lg:text-3xl font-black tracking-tight text-gray-900 dark:text-white">
+                                    Calendario de Proyectos
+                                </h1>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm">SC LLAMKAY SAC</p>
                             </div>
                         </div>
-                        <button onclick="verProyectosEnRiesgo()"
-                                class="w-full mt-3 py-2 bg-yellow-600 text-white text-xs font-bold rounded hover:bg-yellow-700 transition-colors">
-                            Ver Lista
-                        </button>
+
+                        <div class="overflow-x-auto pb-2">
+                            <section th:replace="~{fragments/calendar :: calendar}"></section>
+                        </div>
                     </div>
 
-                    <!-- Información de Ayuda -->
-                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-3 text-xs">
-                        <div class="flex gap-2">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 flex-shrink-0 text-sm">info</span>
-                            <div>
-                                <p class="font-semibold text-blue-900 dark:text-blue-300 mb-1">💡 Tips</p>
-                                <ul class="text-blue-800 dark:text-blue-400 space-y-1 text-xs list-disc list-inside">
-                                    <li>Click en "Ver" muestra proyectos del día</li>
-                                    <li>Rojo = Retrasado | Azul = En Curso</li>
-                                    <li>Verde = Completado | Naranja = Pausado</li>
-                                </ul>
+                    <div class="w-full lg:w-80 shrink-0">
+                        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Resumen Ejecutivo</h2>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-col gap-4">
+
+                            <div
+                                class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-800">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-blue-100 dark:bg-blue-900/50 p-3 rounded-lg flex-shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-blue-600 dark:text-blue-400">workspaces</span>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-2xl font-bold text-gray-900 dark:text-white truncate"
+                                            th:text="${proyectosActivos}">0</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Activos Ahora</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-800">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-purple-100 dark:bg-purple-900/50 p-3 rounded-lg flex-shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-purple-600 dark:text-purple-400">trending_up</span>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-2xl font-bold text-gray-900 dark:text-white truncate"
+                                            th:text="${proyectosEnProgreso}">0</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">En Progreso</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="bg-white dark:bg-gray-900 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow border border-gray-100 dark:border-gray-800">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-green-100 dark:bg-green-900/50 p-3 rounded-lg flex-shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-green-600 dark:text-green-400">task_alt</span>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-2xl font-bold text-gray-900 dark:text-white truncate"
+                                            th:text="${proyectosFinalizados}">0</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Finalizados</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:if="${proyectosRetrasados > 0}"
+                                class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="bg-red-100 dark:bg-red-900/50 p-3 rounded-lg animate-pulse flex-shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-red-600 dark:text-red-400">priority_high</span>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-2xl font-bold text-red-700 dark:text-red-400 truncate"
+                                            th:text="${proyectosRetrasados}">0</p>
+                                        <p class="text-xs text-red-600 dark:text-red-400 font-semibold truncate">🔴
+                                            RETRASADOS</p>
+                                    </div>
+                                </div>
+                                <button onclick="verProyectosRetrasados()"
+                                    class="w-full mt-3 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 transition-colors">
+                                    Ver Lista
+                                </button>
+                            </div>
+
+                            <div th:if="${proyectosEnRiesgo > 0}"
+                                class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-4 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="bg-yellow-100 dark:bg-yellow-900/50 p-3 rounded-lg flex-shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">warning</span>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <p class="text-2xl font-bold text-yellow-700 dark:text-yellow-400 truncate"
+                                            th:text="${proyectosEnRiesgo}">0</p>
+                                        <p class="text-xs text-yellow-600 dark:text-yellow-400 font-semibold truncate">
+                                            ⚠️ RIESGO PRESUPUESTO</p>
+                                    </div>
+                                </div>
+                                <button onclick="verProyectosEnRiesgo()"
+                                    class="w-full mt-3 py-2 bg-yellow-600 text-white text-xs font-bold rounded hover:bg-yellow-700 transition-colors">
+                                    Ver Lista
+                                </button>
+                            </div>
+
+                            <div
+                                class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-3 text-xs sm:col-span-2 lg:col-span-1">
+                                <div class="flex gap-2">
+                                    <span
+                                        class="material-symbols-outlined text-blue-600 dark:text-blue-400 flex-shrink-0 text-sm">info</span>
+                                    <div>
+                                        <p class="font-semibold text-blue-900 dark:text-blue-300 mb-1">💡 Tips</p>
+                                        <ul
+                                            class="text-blue-800 dark:text-blue-400 space-y-1 text-xs list-disc list-inside">
+                                            <li>Click en "Ver" muestra proyectos del día</li>
+                                            <li>Rojo = Retrasado | Azul = En Curso</li>
+                                            <li>Verde = Completado | Naranja = Pausado</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
-</div>
 
-<!-- Modal: Proyectos Retrasados -->
-<div id="modalRetrasados" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none z-50 transition-opacity">
-    <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-2xl p-6 max-h-[80vh] overflow-y-auto transform scale-95 transition-transform">
-        <h2 class="text-xl font-bold text-red-700 dark:text-red-400 mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined">priority_high</span>
-            Proyectos Retrasados
-        </h2>
+    <div id="modalRetrasados"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none z-50 transition-all duration-300 p-4">
+        <div
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto transform scale-95 transition-transform flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-red-700 dark:text-red-400 flex items-center gap-2">
+                    <span class="material-symbols-outlined">priority_high</span>
+                    Proyectos Retrasados
+                </h2>
+                <button onclick="cerrarModalRetrasados()"
+                    class="text-gray-500 hover:text-gray-700 dark:hover:text-white">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
 
-        <div id="listaRetrasados" class="space-y-3">
-            <div th:each="p : ${listadoProyectosRetrasados}"
-                 class="border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 rounded-lg p-4 hover:shadow-md transition-shadow">
-                <div class="flex justify-between items-start mb-2">
-                    <div>
-                        <h3 class="font-bold text-gray-900 dark:text-white" th:text="${p.nombre}"></h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400" th:text="${p.cliente?.nombre}"></p>
+            <div id="listaRetrasados" class="space-y-3">
+                <div th:each="p : ${listadoProyectosRetrasados}"
+                    class="border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2">
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white text-lg" th:text="${p.nombre}"></h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">business</span>
+                                <span th:text="${p.cliente?.nombre}"></span>
+                            </p>
+                        </div>
+                        <span
+                            class="px-2 py-1 rounded text-xs font-bold bg-red-100 text-red-800 border border-red-200 uppercase tracking-wide"
+                            th:text="${p.estado}"></span>
                     </div>
-                    <span class="text-xs font-bold text-red-700 dark:text-red-400" th:text="${p.estado}"></span>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-3">
+                        <p class="text-xs text-gray-600 dark:text-gray-400 font-medium">
+                            Fecha Límite: <span class="text-red-600"
+                                th:text="${#temporals.format(p.fechaFin, 'dd/MM/yyyy')}"></span>
+                        </p>
+                        <a th:href="@{/proyectos/detalle/{id}(id=${p.idProyecto})}"
+                            class="w-full sm:w-auto inline-flex justify-center items-center gap-1 px-4 py-2 text-xs font-bold uppercase bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors shadow-sm">
+                            <span class="material-symbols-outlined text-sm">open_in_new</span>
+                            Ver Detalle
+                        </a>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    Vencía: <span th:text="${#temporals.format(p.fechaFin, 'dd/MM/yyyy')}"></span>
-                </p>
-                <a th:href="@{/proyectos/detalle/{id}(id=${p.idProyecto})}"
-                   class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold bg-red-600 text-white rounded hover:bg-red-700">
-                    <span class="material-symbols-outlined text-sm">open_in_new</span>
-                    Ver Detalle
-                </a>
+            </div>
+
+            <div class="flex justify-end mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <button onclick="cerrarModalRetrasados()"
+                    class="w-full sm:w-auto px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    Cerrar Ventana
+                </button>
             </div>
         </div>
+    </div>
 
-        <div class="flex justify-end mt-6">
-            <button onclick="cerrarModalRetrasados()"
-                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm hover:bg-gray-300">
-                Cerrar
-            </button>
+    <div id="modalRiesgo"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none z-50 transition-all duration-300 p-4">
+        <div
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto transform scale-95 transition-transform flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-yellow-700 dark:text-yellow-400 flex items-center gap-2">
+                    <span class="material-symbols-outlined">monetization_on</span>
+                    Riesgo Financiero
+                </h2>
+                <button onclick="cerrarModalRiesgo()" class="text-gray-500 hover:text-gray-700 dark:hover:text-white">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <div th:each="p : ${listadoProyectosEnRiesgo}"
+                    class="border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-4 hover:shadow-md transition-shadow">
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2">
+                        <div>
+                            <h3 class="font-bold text-gray-900 dark:text-white text-lg" th:text="${p.nombre}"></h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400"
+                                th:text="${p.cliente?.nombre ?: 'Sin Cliente'}"></p>
+                        </div>
+                        <span
+                            class="px-2 py-0.5 rounded text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200 uppercase"
+                            th:text="${p.estado}"></span>
+                    </div>
+
+                    <div
+                        class="bg-white/50 dark:bg-black/20 p-3 rounded-lg border border-yellow-100 dark:border-yellow-900/30 mb-3">
+                        <div class="flex flex-wrap items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                            <span class="material-symbols-outlined text-base">account_balance_wallet</span>
+                            <span>Presupuesto:</span>
+                            <strong class="text-gray-900 dark:text-white font-mono"
+                                th:text="${p.presupuestoTotal != null ? 'S/ ' + #numbers.formatDecimal(p.presupuestoTotal, 1, 2) : 'No definido'}"></strong>
+                            <span
+                                class="text-xs text-red-600 font-bold bg-red-100 px-2 py-0.5 rounded-full ml-auto sm:ml-2">Critico
+                                > 90%</span>
+                        </div>
+                    </div>
+
+                    <a th:href="@{/proyectos/detalle/{id}(id=${p.idProyecto})}"
+                        class="w-full sm:w-auto inline-flex justify-center items-center gap-1 px-4 py-2 text-xs font-bold uppercase bg-yellow-600 text-white rounded-md hover:bg-yellow-700 transition-colors shadow-sm">
+                        <span class="material-symbols-outlined text-sm">visibility</span>
+                        Ver Análisis
+                    </a>
+                </div>
+
+                <div th:if="${#lists.isEmpty(listadoProyectosEnRiesgo)}"
+                    class="text-center text-gray-500 py-8 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-dashed border-gray-300">
+                    <span class="material-symbols-outlined text-4xl mb-2 text-gray-400">check_circle</span>
+                    <p>Todo en orden. No hay riesgos financieros.</p>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <button onclick="cerrarModalRiesgo()"
+                    class="w-full sm:w-auto px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    Cerrar Ventana
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    function verProyectosRetrasados() {
-        const modal = document.getElementById('modalRetrasados');
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modal.querySelector('div').classList.remove('scale-95');
-    }
+    <script>
+        // --- Lógica Modal Retrasados ---
+        function verProyectosRetrasados() {
+            const modal = document.getElementById('modalRetrasados');
+            if (modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.remove('scale-95');
+                document.body.style.overflow = 'hidden'; // Evita scroll del body
+            }
+        }
 
-    function cerrarModalRetrasados() {
-        const modal = document.getElementById('modalRetrasados');
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        modal.querySelector('div').classList.add('scale-95');
-    }
+        function cerrarModalRetrasados() {
+            const modal = document.getElementById('modalRetrasados');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.add('scale-95');
+                document.body.style.overflow = ''; // Restaura scroll
+            }
+        }
 
-    function verProyectosEnRiesgo() {
-        alert('Implementar vista de proyectos en riesgo de presupuesto');
-    }
+        // --- Lógica Modal Riesgo Presupuesto ---
+        function verProyectosEnRiesgo() {
+            const modal = document.getElementById('modalRiesgo');
+            if (modal) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.remove('scale-95');
+                document.body.style.overflow = 'hidden';
+            }
+        }
 
-    // Cerrar con click fuera
-    document.getElementById('modalRetrasados').addEventListener('click', function(e) {
-        if (e.target === this) cerrarModalRetrasados();
-    });
-</script>
+        function cerrarModalRiesgo() {
+            const modal = document.getElementById('modalRiesgo');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('div').classList.add('scale-95');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Cerrar modales al hacer click fuera (Overlay)
+        window.onclick = function (event) {
+            const modalRetrasados = document.getElementById('modalRetrasados');
+            const modalRiesgo = document.getElementById('modalRiesgo');
+
+            if (event.target === modalRetrasados) cerrarModalRetrasados();
+            if (event.target === modalRiesgo) cerrarModalRiesgo();
+        }
+
+        // Cerrar con tecla ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                cerrarModalRetrasados();
+                cerrarModalRiesgo();
+            }
+        });
+    </script>
 
 </body>
+
 </html>

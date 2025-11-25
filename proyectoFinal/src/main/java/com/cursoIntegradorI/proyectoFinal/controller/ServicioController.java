@@ -20,7 +20,6 @@ import java.time.LocalDate;
 public class ServicioController {
 
     private final ServicioService servicioService;
-    private final ProyectoService proyectoService;
     private final ProyectoServicioService proyectoServicioService;
 
     /**

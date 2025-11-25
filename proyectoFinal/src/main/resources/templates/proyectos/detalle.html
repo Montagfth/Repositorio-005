@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle del Proyecto - SC LLAMKAY SAC</title>
+    <link rel="icon" type="image/png" th:href="@{/img/Logo.png}"/>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
@@ -35,63 +36,64 @@
             <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>
 
             <!-- Main Content -->
-            <main class="flex-1 p-6 lg:p-8">
+            <main class="flex-1 p-4 sm:p-6 lg:p-8">
                 <!-- Mensajes flash -->
                 <div th:if="${success}"
-                    class="mb-4 p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 text-green-700 dark:text-green-300 rounded-lg">
+                    class="mb-4 p-3 sm:p-4 bg-green-100 dark:bg-green-900/30 border border-green-400 text-green-700 dark:text-green-300 rounded-lg text-sm sm:text-base">
                     <span th:text="${success}"></span>
                 </div>
                 <div th:if="${error}"
-                    class="mb-4 p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-300 rounded-lg">
+                    class="mb-4 p-3 sm:p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 text-red-700 dark:text-red-300 rounded-lg text-sm sm:text-base">
                     <span th:text="${error}"></span>
                 </div>
 
                 <!-- Header del Proyecto -->
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm mb-6">
-                    <div class="flex justify-between items-start gap-4">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 shadow-sm mb-6">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                         <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <h1 class="text-3xl font-black text-gray-900 dark:text-white"
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white break-words"
                                     th:text="${proyecto.nombre}">Nombre del Proyecto</h1>
                                 <span th:class="${proyecto.estado == 'Completado' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
                                                 proyecto.estado == 'En Curso' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' :
                                                 proyecto.estado == 'Pausado' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
                                                 proyecto.estado == 'Retrasado' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 font-bold' :
                                                 'bg-sky-100 dark:bg-sky-900/30 text-sky-800 dark:text-sky-300'}"
-                                    class="px-3 py-1 rounded-full text-sm font-medium">
+                                    class="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap">
                                     <span th:text="${proyecto.estado}">Estado</span>
                                 </span>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-400 mb-4" th:text="${proyecto.descripcion}">
+                            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4" th:text="${proyecto.descripcion}">
                                 Descripción</p>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                                 <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Cliente</p>
-                                    <p class="font-semibold" th:text="${proyecto.cliente.nombre}">Cliente</p>
+                                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Cliente</p>
+                                    <p class="font-semibold text-sm sm:text-base" th:text="${proyecto.cliente.nombre}">Cliente</p>
                                 </div>
                                 <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Fecha Inicio</p>
-                                    <p class="font-semibold"
+                                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Fecha Inicio</p>
+                                    <p class="font-semibold text-sm sm:text-base"
                                         th:text="${#temporals.format(proyecto.fechaInicio, 'dd/MM/yyyy')}">01/01/2024
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Fecha Fin</p>
-                                    <p class="font-semibold"
+                                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Fecha Fin</p>
+                                    <p class="font-semibold text-sm sm:text-base"
                                         th:text="${proyecto.fechaFin != null ? #temporals.format(proyecto.fechaFin, 'dd/MM/yyyy') : 'No definida'}">
                                         31/12/2024</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex gap-2">
+                        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                             <a th:href="@{/proyectos/editar/{id}(id=${proyecto.idProyecto})}"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+                                class="px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center sm:justify-start gap-2 text-sm sm:text-base order-2 sm:order-1">
                                 <span class="material-symbols-outlined text-sm">edit</span>
-                                <span>Editar Proyecto</span>
+                                <span class="hidden sm:inline">Editar Proyecto</span>
+                                <span class="sm:hidden">Editar</span>
                             </a>
-                            <a th:href="@{/principal}"
-                                class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                            <a th:href="@{/proyectos}"
+                                class="px-3 sm:px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm sm:text-base order-1 sm:order-2">
                                 Volver
                             </a>
                         </div>
@@ -99,123 +101,128 @@
                 </div>
 
                 <!-- Servicios y Asignaciones -->
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Servicios del Proyecto</h2>
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-6">
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Servicios del Proyecto</h2>
                         <button onclick="abrirModalServicio()"
-                            class="px-4 py-2 bg-accent-green text-white rounded-lg hover:bg-accent-green/90 transition-colors flex items-center gap-2">
+                            class="px-3 sm:px-4 py-2 bg-accent-green text-white rounded-lg hover:bg-accent-green/90 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base w-full sm:w-auto">
                             <span class="material-symbols-outlined">add</span>
-                            <span>Asignar Servicio</span>
+                            <span class="hidden sm:inline">Asignar Servicio</span>
+                            <span class="sm:hidden">Agregar</span>
                         </button>
                     </div>
 
                     <!-- Lista de Servicios (ProyectoServicio) -->
                     <div class="space-y-4">
                         <div th:each="ps : ${serviciosProyecto}"
-                            class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                            <div class="flex justify-between items-start mb-4">
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white"
-                                        th:text="${ps.servicio.tipoServicio}">Tipo de Servicio</h3>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm mt-1"
-                                        th:text="${ps.servicio.descripcion}">Descripción</p>
+                            class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 sm:p-5">
+                            <div class="flex flex-col gap-4">
+                                <div class="flex justify-between items-start gap-3">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white break-words"
+                                            th:text="${ps.servicio.tipoServicio}">Tipo de Servicio</h3>
+                                        <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-1 break-words"
+                                            th:text="${ps.servicio.descripcion}">Descripción</p>
 
-                                    <!-- Costos -->
-                                    <div class="flex gap-4 mt-3">
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            Costo Base:
-                                            <span class="font-semibold">$<span
-                                                    th:text="${#numbers.formatDecimal(ps.servicio.costoBase, 1, 2)}">0.00</span></span>
-                                        </div>
-                                        <div class="text-lg font-semibold text-primary">
-                                            Costo Acordado:
-                                            <span>$<span
-                                                    th:text="${#numbers.formatDecimal(ps.costoAcordado, 1, 2)}">0.00</span></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Estado y observaciones -->
-                                    <div class="mt-2 flex items-center gap-3">
-                                        <span
-                                            th:class="${ps.estado == 'Completado' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
-                                                     ps.estado == 'En Proceso' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' :
-                                                     'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'}"
-                                            class="px-2 py-1 rounded-full text-xs font-medium"
-                                            th:text="${ps.estado}">Estado</span>
-
-                                        <span th:if="${ps.fechaAsignacion}" class="text-xs text-gray-500">
-                                            Asignado: <span
-                                                th:text="${#temporals.format(ps.fechaAsignacion, 'dd/MM/yyyy')}"></span>
-                                        </span>
-                                    </div>
-
-                                    <p th:if="${ps.observaciones}"
-                                        class="text-sm text-gray-600 dark:text-gray-400 mt-2 italic"
-                                        th:text="'Observaciones: ' + ${ps.observaciones}"></p>
-                                </div>
-                                <button
-                                    th:onclick="'abrirModalEditarServicio(' + ${ps.idProyectoServicio} + ', ' + ${proyecto.idProyecto} + ')'"
-                                    class="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
-                                    <span class="material-symbols-outlined text-xl">visibility</span>
-                                </button>
-                                <button
-                                    th:onclick="'confirmarDesvincular(' + ${ps.idProyectoServicio} + ',' + ${proyecto.idProyecto} + ')'"
-                                    class="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
-                                    <span class="material-symbols-outlined">remove_circle</span>
-                                </button>
-                            </div>
-
-                            <!-- Personal Asignado al Servicio -->
-                            <div class="mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                                <div class="flex justify-between items-center mb-3">
-                                    <h4 class="font-semibold text-gray-900 dark:text-white">Personal Asignado:</h4>
-                                    <button th:onclick="'abrirModalAsignacion(' + ${ps.idProyectoServicio} + ')'"
-                                        class="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-sm">person_add</span>
-                                        <span>Asignar Personal</span>
-                                    </button>
-                                </div>
-
-                                <div th:if="${!#lists.isEmpty(ps.asignaciones)}" class="space-y-2">
-                                    <div th:each="asignacion : ${ps.asignaciones}"
-                                        class="flex justify-between items-center bg-white dark:bg-gray-900 p-3 rounded-lg">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                                                <span
-                                                    class="material-symbols-outlined text-blue-600 dark:text-blue-400">person</span>
+                                        <!-- Costos -->
+                                        <div class="flex flex-col sm:flex-row sm:gap-4 gap-2 mt-3 text-xs sm:text-sm">
+                                            <div class="text-gray-500 dark:text-gray-400">
+                                                Costo Base:
+                                                <span class="font-semibold text-gray-900 dark:text-white">$<span
+                                                        th:text="${#numbers.formatDecimal(ps.servicio.costoBase, 1, 2)}">0.00</span></span>
                                             </div>
-                                            <div>
-                                                <p class="font-semibold text-gray-900 dark:text-white"
-                                                    th:text="${asignacion.personal.nombre}">Nombre</p>
-                                                <p class="text-sm text-gray-600 dark:text-gray-400">
-                                                    <span th:text="${asignacion.rol}">Rol</span> •
-                                                    <span th:text="${asignacion.horasTrabajadas ?: 0}">0</span>h
-                                                    trabajadas
-                                                </p>
+                                            <div class="text-sm sm:text-lg font-semibold text-primary">
+                                                Costo Acordado:
+                                                <span>$<span
+                                                        th:text="${#numbers.formatDecimal(ps.costoAcordado, 1, 2)}">0.00</span></span>
                                             </div>
                                         </div>
+
+                                        <!-- Estado y observaciones -->
+                                        <div class="mt-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                                            <span
+                                                th:class="${ps.estado == 'Completado' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
+                                                         ps.estado == 'En Proceso' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' :
+                                                         'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'}"
+                                                class="px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap w-fit"
+                                                th:text="${ps.estado}">Estado</span>
+
+                                            <span th:if="${ps.fechaAsignacion}" class="text-xs text-gray-500 dark:text-gray-400 break-words">
+                                                Asignado: <span
+                                                    th:text="${#temporals.format(ps.fechaAsignacion, 'dd/MM/yyyy')}"></span>
+                                            </span>
+                                        </div>
+
+                                        <p th:if="${ps.observaciones}"
+                                            class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 italic break-words"
+                                            th:text="'Observaciones: ' + ${ps.observaciones}"></p>
+                                    </div>
+                                    <div class="flex gap-2 flex-shrink-0">
                                         <button
-                                            th:onclick="'confirmarEliminarAsignacion(' + ${asignacion.idAsignacion} + ', ' + ${proyecto.idProyecto} + ')'"
+                                            th:onclick="'abrirModalEditarServicio(' + ${ps.idProyectoServicio} + ', ' + ${proyecto.idProyecto} + ')'"
+                                            class="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-colors">
+                                            <span class="material-symbols-outlined text-lg sm:text-xl">visibility</span>
+                                        </button>
+                                        <button
+                                            th:onclick="'confirmarDesvincular(' + ${ps.idProyectoServicio} + ',' + ${proyecto.idProyecto} + ')'"
                                             class="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors">
-                                            <span class="material-symbols-outlined">close</span>
+                                            <span class="material-symbols-outlined">remove_circle</span>
                                         </button>
                                     </div>
                                 </div>
-                                <p th:if="${#lists.isEmpty(ps.asignaciones)}"
-                                    class="text-gray-500 dark:text-gray-400 text-sm italic">
-                                    No hay personal asignado a este servicio.
-                                </p>
+
+                                <!-- Personal Asignado al Servicio -->
+                                <div class="mt-2 sm:mt-4 bg-gray-50 dark:bg-gray-800 rounded-lg p-3 sm:p-4">
+                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-3">
+                                        <h4 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white">Personal Asignado:</h4>
+                                        <button th:onclick="'abrirModalAsignacion(' + ${ps.idProyectoServicio} + ')'"
+                                            class="px-3 py-1 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-1 w-full sm:w-auto">
+                                            <span class="material-symbols-outlined text-sm">person_add</span>
+                                            <span class="hidden sm:inline">Asignar Personal</span>
+                                            <span class="sm:hidden">Agregar</span>
+                                        </button>
+                                    </div>
+
+                                    <div th:if="${!#lists.isEmpty(ps.asignaciones)}" class="space-y-2">
+                                        <div th:each="asignacion : ${ps.asignaciones}"
+                                            class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-white dark:bg-gray-900 p-3 rounded-lg">
+                                            <div class="flex items-center gap-3 min-w-0">
+                                                <div
+                                                    class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                                                    <span
+                                                        class="material-symbols-outlined text-blue-600 dark:text-blue-400">person</span>
+                                                </div>
+                                                <div class="min-w-0">
+                                                    <p class="font-semibold text-sm sm:text-base text-gray-900 dark:text-white break-words"
+                                                        th:text="${asignacion.personal.nombre}">Nombre</p>
+                                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 break-words">
+                                                        <span th:text="${asignacion.rol}">Rol</span> •
+                                                        <span th:text="${asignacion.horasTrabajadas ?: 0}">0</span>h
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                th:onclick="'confirmarEliminarAsignacion(' + ${asignacion.idAsignacion} + ', ' + ${proyecto.idProyecto} + ')'"
+                                                class="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors flex-shrink-0">
+                                                <span class="material-symbols-outlined">close</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p th:if="${#lists.isEmpty(ps.asignaciones)}"
+                                        class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm italic">
+                                        No hay personal asignado a este servicio.
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Empty State -->
                         <div th:if="${#lists.isEmpty(serviciosProyecto)}" class="text-center py-12">
                             <span
-                                class="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-700">construction</span>
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-4">No hay servicios
+                                class="material-symbols-outlined text-5xl sm:text-6xl text-gray-300 dark:text-gray-700 block">construction</span>
+                            <h3 class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-4">No hay servicios
                                 asignados</h3>
-                            <p class="text-gray-500 dark:text-gray-400 mt-2">Asigna servicios del catálogo para
+                            <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm sm:text-base px-2">Asigna servicios del catálogo para
                                 gestionar
                                 el personal del proyecto</p>
                         </div>
@@ -227,9 +234,9 @@
 
     <!-- Modal: Asignar Servicio del Catálogo -->
     <div id="modalServicio"
-        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50 p-4">
         <div
-            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-md p-6 transform scale-95 transition-transform duration-200">
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-md p-4 sm:p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Asignar Servicio al Proyecto</h3>
             <form th:action="@{/proyectos/{id}/asignar-servicio(id=${proyecto.idProyecto})}" method="post">
                 <div class="space-y-4">
@@ -237,7 +244,7 @@
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Servicio del Catálogo
                             *</span>
                         <select name="idServicio" required
-                            class="form-select rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                            class="form-select rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base">
                             <option value="">Seleccione un servicio</option>
                             <option th:each="servicio : ${catalogoServicios}" th:value="${servicio.idServicio}"
                                 th:text="${servicio.tipoServicio + ' - $' + #numbers.formatDecimal(servicio.costoBase, 1, 2)}">
@@ -250,7 +257,7 @@
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Costo Acordado
                             (opcional)</span>
                         <input name="costoAcordado" type="number" step="0.01" min="0"
-                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base"
                             placeholder="Dejar vacío para usar el costo base">
                         <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">Si no especificas, se usará el costo
                             base del catálogo</span>
@@ -260,7 +267,7 @@
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Observaciones
                             (opcional)</span>
                         <textarea name="observaciones" rows="3"
-                            class="form-textarea rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            class="form-textarea rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base"
                             placeholder="Notas específicas para este servicio en el proyecto"></textarea>
                     </label>
 
@@ -270,13 +277,13 @@
                     </p>
                 </div>
 
-                <div class="flex justify-end gap-3 mt-6">
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6">
                     <button type="button" onclick="cerrarModalServicio()"
-                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300">
+                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 text-sm sm:text-base">
                         Cancelar
                     </button>
                     <button type="submit"
-                        class="px-4 py-2 bg-accent-green text-white rounded-lg hover:bg-accent-green/90">
+                        class="px-4 py-2 bg-accent-green text-white rounded-lg hover:bg-accent-green/90 text-sm sm:text-base">
                         Asignar Servicio
                     </button>
                 </div>
@@ -286,10 +293,10 @@
 
     <!-- Modal: Editar Servicio del Catálogo -->
     <div id="modalEditarServicio"
-        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50 p-4">
         <div
-            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-2xl p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Editar Servicio del Proyecto</h3>
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-2xl p-4 sm:p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">Editar Servicio del Proyecto</h3>
 
             <form id="formEditarServicio" method="post">
                 <input type="hidden" id="edit_idProyectoServicio" name="idProyectoServicio" />
@@ -300,18 +307,18 @@
                     <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                         <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-2">Servicio del
                             Catálogo</p>
-                        <div class="grid grid-cols-1 gap-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Tipo de Servicio</p>
-                                <p id="edit_tipoServicio" class="font-semibold text-gray-900 dark:text-white">-</p>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Tipo de Servicio</p>
+                                <p id="edit_tipoServicio" class="font-semibold text-gray-900 dark:text-white break-words">-</p>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Descripción</p>
-                                <p id="edit_descripcion" class="text-sm text-gray-700 dark:text-gray-300">-</p>
-                            </div>
-                            <div>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Costo Base del Catálogo</p>
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Costo Base</p>
                                 <p id="edit_costoBase" class="text-lg font-bold text-gray-900 dark:text-white">$0.00</p>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Descripción</p>
+                                <p id="edit_descripcion" class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 break-words">-</p>
                             </div>
                         </div>
                     </div>
@@ -325,7 +332,7 @@
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">$</span>
                             <input id="edit_costoAcordado" name="costoAcordado" type="number" step="0.01" min="0"
                                 required
-                                class="form-input pl-8 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-full"
+                                class="form-input pl-8 rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-full text-sm sm:text-base"
                                 placeholder="0.00">
                         </div>
                         <span class="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -340,7 +347,7 @@
                         </span>
                         <div class="relative">
                             <select id="edit_estado" name="estado" required
-                                class="form-select appearance-none rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-full pr-10">
+                                class="form-select appearance-none rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white w-full pr-10 text-sm sm:text-base">
                                 <option value="Pendiente">Pendiente</option>
                                 <option value="En Proceso">En Proceso</option>
                                 <option value="Completado">Completado</option>
@@ -356,12 +363,12 @@
                             Observaciones Específicas del Proyecto
                         </span>
                         <textarea id="edit_observaciones" name="observaciones" rows="4"
-                            class="form-textarea rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            class="form-textarea rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base"
                             placeholder="Notas o detalles específicos para este servicio en el proyecto..."></textarea>
                     </label>
 
                     <!-- Fecha de Asignación (solo lectura) -->
-                    <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                         <span class="material-symbols-outlined text-base">schedule</span>
                         <span>Fecha de asignación: <strong id="edit_fechaAsignacion">-</strong></span>
                     </div>
@@ -370,7 +377,7 @@
                     <div
                         class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
                         <div class="flex gap-2">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">info</span>
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 flex-shrink-0">info</span>
                             <p class="text-xs text-blue-700 dark:text-blue-300">
                                 Los cambios solo afectarán a este servicio en este proyecto específico.
                                 El servicio del catálogo permanecerá sin cambios.
@@ -380,13 +387,13 @@
                 </div>
 
                 <!-- Botones -->
-                <div class="flex justify-end gap-3 mt-6">
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6">
                     <button type="button" onclick="cerrarModalEditarServicio()"
-                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 transition-colors">
+                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 transition-colors text-sm sm:text-base">
                         Cancelar
                     </button>
                     <button type="submit"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base">
                         <span class="material-symbols-outlined text-sm">save</span>
                         <span>Guardar Cambios</span>
                     </button>
@@ -397,9 +404,9 @@
 
     <!-- Modal: Asignar Personal a Servicio -->
     <div id="modalAsignacion"
-        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+        class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-200 z-50 p-4">
         <div
-            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-[90%] max-w-md p-6 transform scale-95 transition-transform duration-200">
+            class="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-md p-4 sm:p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Asignar Personal al Servicio</h3>
             <form th:action="@{/asignaciones/guardar}" method="post">
                 <input type="hidden" name="idProyecto" th:value="${proyecto.idProyecto}" />
@@ -409,7 +416,7 @@
                     <label class="flex flex-col">
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Personal *</span>
                         <select name="personal.idPersonal" required
-                            class="form-select rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                            class="form-select rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base">
                             <option value="">Seleccione personal</option>
                             <option th:each="p : ${personalDisponible}" th:value="${p.idPersonal}"
                                 th:text="${p.nombre + ' - ' + p.cargo}">Personal</option>
@@ -420,45 +427,45 @@
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rol en el Proyecto
                             *</span>
                         <input name="rol" required
-                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base"
                             placeholder="Ej: Desarrollador Frontend">
                     </label>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <label class="flex flex-col">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fecha Inicio</span>
                             <input name="fechaInicio" type="date"
-                                class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                                class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base">
                         </label>
 
                         <label class="flex flex-col">
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fecha Fin</span>
                             <input name="fechaFin" type="date"
-                                class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                                class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base">
                         </label>
                     </div>
 
                     <label class="flex flex-col">
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Horas Trabajadas</span>
                         <input name="horasTrabajadas" type="number" step="0.5" value="0"
-                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base">
                     </label>
 
                     <label class="flex flex-col">
                         <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tarifa por Hora
                             ($)</span>
                         <input name="tarifaPorHora" type="number" step="0.01" min="0"
-                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                            class="form-input rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm sm:text-base"
                             placeholder="Opcional">
                     </label>
                 </div>
 
-                <div class="flex justify-end gap-3 mt-6">
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-6">
                     <button type="button" onclick="cerrarModalAsignacion()"
-                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300">
+                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 text-sm sm:text-base">
                         Cancelar
                     </button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm sm:text-base">
                         Asignar Personal
                     </button>
                 </div>

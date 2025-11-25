@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         mav.addObject("errorTitle", "Error Interno");
         mav.addObject("errorMessage", "Ha ocurrido un error inesperado. Por favor, intenta nuevamente.");
         mav.addObject("errorIcon", "error");
-        mav.addObject("showDetails", false);
+        mav.addObject("showDetails", true);
         return mav;
     }
 }

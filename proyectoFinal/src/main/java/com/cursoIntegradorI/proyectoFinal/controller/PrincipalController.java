@@ -90,6 +90,16 @@ public class PrincipalController {
                 }
             }
         }
+        // ✅ LÓGICA ACTUALIZADA: Obtener la LISTA de proyectos en riesgo
+        List<Proyecto> listadoProyectosEnRiesgo = proyectos.stream()
+                .filter(p -> p.getPresupuestoTotal() != null && p.getPresupuestoTotal() > 0)
+                .filter(p -> {
+                    double costoTotal = p.getServicios() != null ? p.getServicios().stream()
+                            .mapToDouble(ps -> ps.getCostoAcordado() != null ? ps.getCostoAcordado() : 0.0)
+                            .sum() : 0.0;
+                    return costoTotal > p.getPresupuestoTotal() * 0.9; // Mayor al 90%
+                })
+                .collect(Collectors.toList());
 
         // Agregar atributos al modelo
         model.addAttribute("offset", offset);
@@ -107,6 +117,8 @@ public class PrincipalController {
         model.addAttribute("proyectosRetrasados", proyectosRetrasados.size());
         model.addAttribute("proyectosEnRiesgo", proyectosEnRiesgo);
         model.addAttribute("listadoProyectosRetrasados", proyectosRetrasados);
+        model.addAttribute("proyectosEnRiesgo", listadoProyectosEnRiesgo.size()); // El número para la tarjeta
+        model.addAttribute("listadoProyectosEnRiesgo", listadoProyectosEnRiesgo); // La lista para el modal
 
         // ✅ NUEVA LÓGICA: Detectar sobrecarga de personal
         List<PersonalService.ReporteSobrecarga> personalEnRiesgo =

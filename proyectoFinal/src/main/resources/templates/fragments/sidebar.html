@@ -1,70 +1,150 @@
-<!-- fragments/sidebar.html - CORREGIDO -->
 <div th:fragment="sidebar"
-     class="flex flex-col w-64 h-screen bg-white dark:bg-gray-900 p-4 border-r border-gray-200 dark:border-gray-700 overflow-hidden">
+     id="sidebar"
+     class="top-0 flex flex-col h-screen bg-white dark:bg-gray-900 p-2 sm:p-4 border-r border-gray-200 dark:border-gray-700 w-16 sm:w-64 z-30 shadow-md sidebar-collapsed transition-all duration-300">
+    
+    <button id="sidebar-toggle" class="sm:hidden flex items-center justify-center mb-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        <span class="material-symbols-outlined">menu</span>
+    </button>
 
-    <!-- Perfil del usuario -->
-    <div class="flex items-center gap-3 mb-8">
-        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12"
+    <div class="flex items-center gap-3 mb-8 sidebar-user sidebar-content-row transition-all duration-300">
+        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 sm:size-12 shrink-0"
              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLxi9wUkLYLMCeWsdmpfU1ebLr7lRiDHlnneVQTtOQP3PHhbVmDwbthc0m4kDHwTzAyfEUWLlXv0nCN33h65SKaSGjjKeRyb55JNmMIO_0H-hlssxgkIn8U7cCAY5RRNuehZakJqGNedQtu0E4_NBVvvBy9kL1XpVlatwRGgwGAi4R7FrQRZKTYjxSMpaLMTZZ64u8HQt2Pl8V9eFY_Ng89epmZDIdvW0lOW5fzLQCZLHFL7B1r-e_m_cwDiYsYbcW3GBsVqi_4eo");'>
         </div>
-        <div class="flex flex-col">
-            <h1 class="text-gray-900 dark:text-white text-lg font-bold"
+        <div class="flex flex-col sidebar-user-text overflow-hidden whitespace-nowrap">
+            <h1 class="text-gray-900 dark:text-white text-base sm:text-lg font-bold"
                 th:text="${#authentication.name}">Usuario</h1>
-            <p class="text-gray-500 dark:text-gray-400 text-sm">SC LLAMKAY SAC</p>
+            <p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm">SC LLAMKAY SAC</p>
         </div>
     </div>
 
-    <!-- Menú principal -->
-    <nav class="flex flex-col gap-2 flex-1">
+    <nav class="flex flex-col gap-2 flex-1 overflow-y-auto pr-0 sm:pr-2">
         <a th:href="@{/principal}"
            th:classappend="${currentPage == 'principal' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
-           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">calendar_month</span>
-            <p class="text-sm font-medium">Calendario</p>
+           class="sidebar-content-row flex items-center gap-3 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 group transition-all duration-200">
+            <span class="material-symbols-outlined shrink-0">calendar_month</span>
+            <span class="sidebar-link-text text-xs sm:text-sm font-medium whitespace-nowrap overflow-hidden">Calendario</span>
         </a>
 
         <a th:href="@{/proyectos}"
            th:classappend="${currentPage == 'proyectos' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
-           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">workspaces</span>
-            <p class="text-sm font-medium">Proyectos</p>
+           class="sidebar-content-row flex items-center gap-3 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 group transition-all duration-200">
+            <span class="material-symbols-outlined shrink-0">workspaces</span>
+            <span class="sidebar-link-text text-xs sm:text-sm font-medium whitespace-nowrap overflow-hidden">Proyectos</span>
         </a>
 
         <a th:href="@{/clientes}"
            th:classappend="${currentPage == 'clientes' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
-           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">group</span>
-            <p class="text-sm font-medium">Clientes</p>
+           class="sidebar-content-row flex items-center gap-3 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 group transition-all duration-200">
+            <span class="material-symbols-outlined shrink-0">group</span>
+            <span class="sidebar-link-text text-xs sm:text-sm font-medium whitespace-nowrap overflow-hidden">Clientes</span>
         </a>
 
         <a th:href="@{/personal}"
            th:classappend="${currentPage == 'personal' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
-           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">badge</span>
-            <p class="text-sm font-medium">Personal</p>
+           class="sidebar-content-row flex items-center gap-3 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 group transition-all duration-200">
+            <span class="material-symbols-outlined shrink-0">badge</span>
+            <span class="sidebar-link-text text-xs sm:text-sm font-medium whitespace-nowrap overflow-hidden">Personal</span>
         </a>
 
         <a th:href="@{/servicios}"
            th:classappend="${currentPage == 'servicios' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
-           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">design_services</span>
-            <p class="text-sm font-medium">Servicios</p>
+           class="sidebar-content-row flex items-center gap-3 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 group transition-all duration-200">
+            <span class="material-symbols-outlined shrink-0">design_services</span>
+            <span class="sidebar-link-text text-xs sm:text-sm font-medium whitespace-nowrap overflow-hidden">Servicios</span>
         </a>
 
         <a th:href="@{/reportes}"
            th:classappend="${currentPage == 'reportes' ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-white' : ''}"
-           class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-transform duration-200 hover:scale-105">
-            <span class="material-symbols-outlined">summarize</span>
-            <p class="text-sm font-medium">Reportes</p>
+           class="sidebar-content-row flex items-center gap-3 px-2 sm:px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 group transition-all duration-200">
+            <span class="material-symbols-outlined shrink-0">summarize</span>
+            <span class="sidebar-link-text text-xs sm:text-sm font-medium whitespace-nowrap overflow-hidden">Reportes</span>
         </a>
     </nav>
 
-    <!-- Botones inferiores agrupados -->
-    <div class="flex flex-col gap-2 mt-auto">
+    <div class="flex flex-col gap-2 mt-auto pt-4 border-t border-gray-200 dark:border-gray-700">
         <a th:href="@{/logout}"
-           class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-accent-red text-white text-sm font-bold hover:bg-accent-red/90 transition-transform duration-200 hover:-translate-y-1">
-            <span class="material-symbols-outlined">account_circle_off</span>
-            <span>Cerrar Sesion</span>
+           class="sidebar-content-row flex items-center gap-2 rounded-lg h-10 px-2 sm:px-4 bg-accent-red text-white text-xs sm:text-sm font-bold hover:bg-accent-red/90 w-full transition-all duration-200">
+            <span class="material-symbols-outlined shrink-0">account_circle_off</span>
+            <span class="sidebar-link-text whitespace-nowrap overflow-hidden">Cerrar Sesion</span>
         </a>
     </div>
+
+    <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebar-toggle');
+
+    function setSidebarState(expanded) {
+        if (expanded) {
+            sidebar.classList.remove('sidebar-collapsed');
+            sidebar.classList.add('sidebar-expanded');
+        } else {
+            sidebar.classList.add('sidebar-collapsed');
+            sidebar.classList.remove('sidebar-expanded');
+        }
+
+        // Controlamos la visibilidad del texto
+        document.querySelectorAll('.sidebar-link-text, .sidebar-user-text').forEach(el => {
+            // Si está expandido O es pantalla grande (>= 640px)
+            if (expanded || window.innerWidth >= 640) {
+                el.style.display = 'block'; 
+                // Pequeño timeout para la opacidad si quisieras animación, 
+                // pero 'block' es necesario para que ocupe espacio.
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    }
+
+    // Estado inicial
+    setSidebarState(false);
+
+    toggleBtn.addEventListener('click', function() {
+        const expanded = sidebar.classList.contains('sidebar-collapsed');
+        setSidebarState(expanded);
+    });
+
+    window.addEventListener('resize', function() {
+        // Al redimensionar, verificamos si está expandido
+        setSidebarState(sidebar.classList.contains('sidebar-expanded'));
+    });
+    </script>
+
+    <style>
+    /* Anchos base */
+    .sidebar-collapsed { width: 4rem !important; }
+    .sidebar-expanded { width: 14rem !important; } /* Un poco más ancho para que quepa bien el texto */
+
+    /* LÓGICA DE ALINEACIÓN DE ICONOS:
+       
+       1. Móvil Colapsado (.sidebar-collapsed):
+          Queremos que el contenido (icono) esté CENTRADO.
+    */
+    .sidebar-collapsed .sidebar-content-row {
+        justify-content: center;
+    }
+
+    /* 2. Móvil Expandido (.sidebar-expanded):
+          Queremos que el contenido (icono + texto) esté a la IZQUIERDA (start).
+    */
+    .sidebar-expanded .sidebar-content-row {
+        justify-content: flex-start;
+    }
+
+    /* 3. Desktop (min-width: 640px):
+          Siempre es ancho completo (16rem), así que siempre alineado a la izquierda.
+    */
+    @media (min-width: 640px) {
+      .sidebar-collapsed, .sidebar-expanded { 
+          width: 16rem !important; 
+      }
+      .sidebar-link-text, .sidebar-user-text { 
+          display: block !important; 
+      }
+      /* En desktop siempre alineamos a la izquierda */
+      .sidebar-collapsed .sidebar-content-row,
+      .sidebar-expanded .sidebar-content-row {
+          justify-content: flex-start;
+      }
+    }
+    </style>
 </div>

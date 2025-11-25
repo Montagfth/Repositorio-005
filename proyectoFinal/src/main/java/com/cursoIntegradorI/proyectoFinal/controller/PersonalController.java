@@ -17,6 +17,7 @@ public class PersonalController {
 
     @GetMapping
     public String listar(Model model) {
+        model.addAttribute("currentPage", "personal");
         model.addAttribute("personal", personalService.listarTodos());
         return "personal/lista";
     }
